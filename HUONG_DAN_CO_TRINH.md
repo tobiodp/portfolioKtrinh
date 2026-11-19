@@ -10,17 +10,17 @@ Chào Cô Trinh! Đây là tài liệu hướng dẫn chi tiết, dễ hiểu gi
 Hệ thống của cô bao gồm **2 phân hệ chính**:
 
 1. **Trang Giới Thiệu (Landing Page):**
-   * **Địa chỉ:** [http://localhost:3000/index.html](http://localhost:3000/index.html)
+   * **Địa chỉ:** [https://cotrinh.tobio.id.vn](https://cotrinh.tobio.id.vn)
    * **Mục đích:** Giới thiệu bản thân, bằng cấp Sư phạm, kinh nghiệm, phương pháp giảng dạy và đánh giá (feedback) của học sinh để phụ huynh tin tưởng đăng ký học.
 2. **Cổng Lớp Học Trực Tuyến (Classroom LMS):**
-   * **Địa chỉ:** [http://localhost:3000/classroom.html](http://localhost:3000/classroom.html) (hoặc bấm nút màu hồng **"Vào Lớp Học"** ở góc trên trang chủ).
+   * **Địa chỉ:** [https://cotrinh.tobio.id.vn/classroom.html](https://cotrinh.tobio.id.vn/classroom.html) (hoặc bấm nút màu hồng **"Vào Lớp Học"** ở góc trên trang chủ).
    * **Mục đích:** Nơi cô tạo lớp, quản lý học sinh, giao bài tập về nhà, chấm điểm, theo dõi lịch dạy và nhận thông tin phụ huynh đăng ký.
 
 ---
 
 ## 🔑 2. THÔNG TIN ĐĂNG NHẬP CỦA CÔ TRINH
 
-* **Trang đăng nhập:** [http://localhost:3000/classroom.html](http://localhost:3000/classroom.html)
+* **Trang đăng nhập:** [https://cotrinh.tobio.id.vn/classroom.html](https://cotrinh.tobio.id.vn/classroom.html)
 * **Tên đăng nhập (Username):** `cotrinh`
 * **Mật khẩu (Password):** `cotrinh123`
 *(Cô có thể bấm vào biểu tượng con mắt 👁️ ở ô mật khẩu để kiểm tra lại mật khẩu khi gõ).*
@@ -105,7 +105,7 @@ Khi nhận học sinh mới, cô có thể sao chép đoạn tin nhắn mẫu d�
 
 > *"Chào ba mẹ và em [Tên Học Sinh],*  
 > *Cô Trinh gửi thông tin tài khoản để em vào nhận bài tập và xem lịch học của lớp:*  
-> *🌐 Địa chỉ lớp học: http://localhost:3000/classroom.html*  
+> *🌐 Địa chỉ lớp học: https://cotrinh.tobio.id.vn/classroom.html*  
 > *👤 Tên đăng nhập: **[Nhập username cô đã tạo]***  
 > *🔑 Mật khẩu: **123456***  
 > *Sau khi đăng nhập, em nhớ kiểm tra mục 'Bài Tập Về Nhà' để hoàn thành bài cô giao trước buổi học tiếp theo nhé! Cảm ơn ba mẹ và em."*
