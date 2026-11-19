@@ -40,7 +40,6 @@ const upload = multer({
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/uploads', express.static(uploadsDir));
 app.use(express.static(path.join(__dirname)));
 
 // MySQL Connection Pool
@@ -54,6 +53,61 @@ const pool = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
+});
+
+// Ensure file_storage and system_settings tables exist
+(async () => {
+  try {
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS file_storage (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        filename VARCHAR(255) NOT NULL UNIQUE,
+        mime_type VARCHAR(100) DEFAULT 'application/octet-stream',
+        file_data LONGBLOB NOT NULL,
+        file_size INT DEFAULT 0,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    `);
+    await pool.execute(`
+      CREATE TABLE IF NOT EXISTS system_settings (
+        setting_key VARCHAR(100) PRIMARY KEY,
+        setting_value TEXT,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    `);
+  } catch (err) {
+    console.error('Error verifying database tables:', err.message);
+  }
+})();
+
+// Serve uploaded files (fallback to MySQL file_storage if not on local disk)
+app.get('/uploads/:filename', async (req, res) => {
+  const filename = path.basename(req.params.filename);
+  const localFilePath = path.join(uploadsDir, filename);
+
+  if (fs.existsSync(localFilePath)) {
+    return res.sendFile(localFilePath);
+  }
+
+  try {
+    const [rows] = await pool.execute('SELECT mime_type, file_data FROM file_storage WHERE filename = ?', [filename]);
+    if (rows.length > 0 && rows[0].file_data) {
+      const file = rows[0];
+      try {
+        fs.writeFileSync(localFilePath, file.file_data);
+      } catch (writeErr) {
+        // ignore disk write error if disk is read-only
+      }
+      if (file.mime_type) {
+        res.set('Content-Type', file.mime_type);
+      }
+      return res.send(file.file_data);
+    }
+  } catch (dbErr) {
+    console.error('Lỗi lấy file từ file_storage:', dbErr.message);
+  }
+
+  res.status(404).send('Không tìm thấy tệp đính kèm');
 });
 
 // Mail Transporter Helper
@@ -117,11 +171,24 @@ function authenticateToken(req, res, next) {
 }
 
 // File Upload Endpoint
-app.post('/api/upload', authenticateToken, upload.single('file'), (req, res) => {
+app.post('/api/upload', authenticateToken, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'Không tìm thấy file tải lên' });
     }
+
+    // Persist file into MySQL file_storage table so it persists across Render restarts/redeploys
+    try {
+      const fileBuffer = fs.readFileSync(req.file.path);
+      await pool.execute(`
+        INSERT INTO file_storage (filename, mime_type, file_data, file_size)
+        VALUES (?, ?, ?, ?)
+        ON DUPLICATE KEY UPDATE file_data = VALUES(file_data), mime_type = VALUES(mime_type), file_size = VALUES(file_size)
+      `, [req.file.filename, req.file.mimetype, fileBuffer, req.file.size]);
+    } catch (saveErr) {
+      console.error('Lỗi lưu file vào DB:', saveErr.message);
+    }
+
     const fileUrl = `/uploads/${req.file.filename}`;
     res.json({
       success: true,
