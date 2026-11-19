@@ -710,8 +710,8 @@
       }, 3500);
     }
 
-    // Auto-detect API Base (supports http://localhost:3000, file://, and Live Server)
-    const API_BASE = (window.location.protocol === 'file:' || !window.location.origin.includes(':3000')) ? 'http://localhost:3000' : '';
+    // Auto-detect API Base (uses relative URL on web/production, and live domain on local file://)
+    const API_BASE = (window.location.protocol === 'file:') ? 'https://cotrinh.tobio.id.vn' : '';
 
     // Init App
     document.addEventListener('DOMContentLoaded', async () => {
@@ -777,7 +777,7 @@
         showToast(`Chào mừng ${currentUser.full_name} đã đăng nhập!`);
         renderLoggedIn();
       } catch (err) {
-        errorDiv.innerHTML = '<strong>Lỗi kết nối máy chủ:</strong> ' + err.message + '<div class="text-[11px] font-normal text-amber-900 mt-2 p-2 rounded-lg bg-amber-50 border border-amber-200">💡 Vui lòng đảm bảo máy chủ Node.js đang chạy và mở tại địa chỉ:<br><a href="http://localhost:3000/classroom.html" class="underline font-bold text-brand-accent">http://localhost:3000/classroom.html</a></div>';
+        errorDiv.innerHTML = '<strong>Lỗi kết nối máy chủ:</strong> ' + err.message + '<div class="text-[11px] font-normal text-amber-900 mt-2 p-2 rounded-lg bg-amber-50 border border-amber-200">💡 Vui lòng kiểm tra lại kết nối mạng hoặc thử tải lại (F5) trang web.</div>';
         errorDiv.classList.remove('hidden');
       }
     }

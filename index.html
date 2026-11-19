@@ -1117,7 +1117,7 @@
     });
 
     // Form submit handler - Save to MySQL Database
-    const API_BASE = (window.location.protocol === 'file:' || !window.location.origin.includes(':3000')) ? 'http://localhost:3000' : '';
+    const API_BASE = (window.location.protocol === 'file:') ? 'https://cotrinh.tobio.id.vn' : '';
 
     async function handleFormSubmit(e) {
       e.preventDefault();
