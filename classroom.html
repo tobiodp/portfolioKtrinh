@@ -912,6 +912,7 @@
       if (tab === 'reminders') {
         loadTodayClassesReminder();
         loadEmailLogs();
+        loadSmtpConfig();
       }
       lucide.createIcons();
     }
@@ -1734,9 +1735,28 @@
       });
       const data = await res.json();
       if (res.ok) {
-        showToast('Đã lưu cấu hình Gmail thành công!');
+        showToast('Đã lưu cấu hình Gmail vào cơ sở dữ liệu thành công!');
+        await loadSmtpConfig();
       } else {
         alert(data.error || 'Lỗi lưu cấu hình');
+      }
+    }
+
+    async function loadSmtpConfig() {
+      try {
+        const res = await fetch(API_BASE + '/api/teacher/smtp-config', { headers: getAuthHeaders() });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.email) {
+          const emailInput = document.getElementById('smtpEmail');
+          if (emailInput) emailInput.value = data.email;
+        }
+        if (data.configured) {
+          const passInput = document.getElementById('smtpPass');
+          if (passInput) passInput.placeholder = '•••••••••••••••• (Đã lưu mật khẩu)';
+        }
+      } catch (e) {
+        console.error('Error loading smtp config:', e);
       }
     }
 

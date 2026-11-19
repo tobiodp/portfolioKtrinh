@@ -57,19 +57,50 @@ const pool = mysql.createPool({
 });
 
 // Mail Transporter Helper
-function getMailer() {
-  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+async function getSmtpConfig() {
+  let user = process.env.SMTP_USER;
+  let pass = process.env.SMTP_PASS;
+
+  try {
+    const [rows] = await pool.execute("SELECT setting_key, setting_value FROM system_settings WHERE setting_key IN ('smtp_user', 'smtp_pass')");
+    for (const r of rows) {
+      if (r.setting_key === 'smtp_user' && r.setting_value) user = r.setting_value.trim();
+      if (r.setting_key === 'smtp_pass' && r.setting_value) pass = r.setting_value.trim();
+    }
+  } catch (e) {
+    // ignore
+  }
+  return { user, pass };
+}
+
+let cachedMailer = null;
+let lastSmtpKey = '';
+
+async function getMailer() {
+  const { user, pass } = await getSmtpConfig();
+  if (!user || !pass) {
     return null;
   }
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'smtp.gmail.com',
-    port: parseInt(process.env.SMTP_PORT || '587'),
-    secure: false,
+
+  const key = `${user}:${pass}`;
+  if (cachedMailer && lastSmtpKey === key) {
+    return cachedMailer;
+  }
+
+  cachedMailer = nodemailer.createTransport({
+    service: 'gmail',
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS
-    }
+      user: user,
+      pass: pass
+    },
+    pool: true,
+    maxConnections: 3,
+    maxMessages: 50,
+    socketTimeout: 30000,
+    connectionTimeout: 30000
   });
+  lastSmtpKey = key;
+  return cachedMailer;
 }
 
 // Authentication Middleware
@@ -587,7 +618,7 @@ function getTodayVietnameseDay() {
 
 // Send Class Reminder Email (On the day of the class)
 async function sendClassReminderEmail(recipientEmail, studentName, className, timeText, location) {
-  const mailer = getMailer();
+  const mailer = await getMailer();
   const subject = `[Lớp Học Cô Trinh] Nhắc Lịch Học Hôm Nay: ${className}`;
   const now = new Date();
   const dateStr = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
@@ -667,7 +698,7 @@ async function getTeacherEmail() {
 // Send Lead Notification Email to Teacher (when parent registers on Landing Page)
 async function sendLeadNotificationToTeacher(lead) {
   const teacherEmail = await getTeacherEmail();
-  const mailer = getMailer();
+  const mailer = await getMailer();
   const subject = `[Lớp Học Cô Trinh] 🔔 Phụ Huynh Mới Đăng Ký: ${lead.name} (${lead.phone})`;
   const now = new Date();
   const timeStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')} ngày ${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
@@ -737,7 +768,7 @@ async function sendLeadNotificationToTeacher(lead) {
 
 // Send Teacher Daily Schedule Briefing Email
 async function sendTeacherDailyScheduleEmail(teacherEmail, todayName, schedules) {
-  const mailer = getMailer();
+  const mailer = await getMailer();
   const subject = `[Lớp Học Cô Trinh] 📅 Lịch Dạy Hôm Nay Của Cô (${todayName})`;
   const now = new Date();
   const dateStr = `${now.getDate()}/${now.getMonth() + 1}/${now.getFullYear()}`;
@@ -939,15 +970,40 @@ app.get('/api/email-logs', authenticateToken, async (req, res) => {
   }
 });
 
+app.get('/api/teacher/smtp-config', authenticateToken, async (req, res) => {
+  try {
+    if (req.user.role !== 'teacher') return res.status(403).json({ error: 'Chỉ giáo viên có quyền' });
+    const { user, pass } = await getSmtpConfig();
+    res.json({
+      configured: !!(user && pass),
+      email: user || ''
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.post('/api/teacher/smtp-config', authenticateToken, async (req, res) => {
   try {
     if (req.user.role !== 'teacher') return res.status(403).json({ error: 'Chỉ giáo viên có quyền' });
     const { email, app_password } = req.body;
     if (email && app_password) {
-      process.env.SMTP_USER = email.trim();
-      process.env.SMTP_PASS = app_password.trim();
-      process.env.SMTP_FROM = `"Lớp Học Cô Trinh" <${email.trim()}>`;
-      res.json({ success: true, message: 'Đã cập nhật tài khoản Gmail gửi thông báo!' });
+      const cleanEmail = email.trim();
+      const cleanPass = app_password.trim().replace(/\s+/g, ''); // Tự động xóa mọi khoảng trắng trong mật khẩu 16 ký tự
+
+      process.env.SMTP_USER = cleanEmail;
+      process.env.SMTP_PASS = cleanPass;
+      process.env.SMTP_FROM = `"Lớp Học Cô Trinh" <${cleanEmail}>`;
+      cachedMailer = null; // Reset mailer để áp dụng cấu hình mới ngay
+
+      // Lưu vĩnh viễn vào MySQL Database để không bao giờ bị mất khi Render khởi động lại
+      await pool.execute(`
+        INSERT INTO system_settings (setting_key, setting_value)
+        VALUES ('smtp_user', ?), ('smtp_pass', ?)
+        ON DUPLICATE KEY UPDATE setting_value = VALUES(setting_value)
+      `, [cleanEmail, cleanPass]);
+
+      res.json({ success: true, message: 'Đã lưu cấu hình Gmail gửi thông báo vào cơ sở dữ liệu vĩnh viễn!' });
     } else {
       res.status(400).json({ error: 'Vui lòng nhập Email và Mật khẩu ứng dụng Gmail' });
     }
