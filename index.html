@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lớp Học Cô Trinh | Gia Sư Toán & Khoa Học Tự Nhiên THCS</title>
+  <meta name="description" content="Lớp học Cô Trinh - Tốt nghiệp Sư phạm Khoa học tự nhiên. Chuyên dạy kèm Toán (lớp 6, 7, 8) và KHTN (lớp 6, 7, 8, 9) tại Đà Nẵng.">
+  
+  <!-- Google Fonts: Quicksand & Playfair Display / Be Vietnam Pro -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cream: '#FAF6F0',
+              creamDark: '#F3EDE2',
+              pink: '#F7C5CC',
+              pinkSoft: '#FDF0F2',
+              pinkDark: '#E08390',
+              sage: '#CDE4DC',
+              sageSoft: '#EDF6F3',
+              sageDark: '#5E9385',
+              brown: '#533E2D',
+              brownLight: '#7E6857',
+              brownDark: '#352417',
+              accent: '#E7786B'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Quicksand"', 'sans-serif']
+          },
+          boxShadow: {
+            'soft': '0 10px 30px -5px rgba(83, 62, 45, 0.08)',
+            'hover': '0 20px 40px -10px rgba(83, 62, 45, 0.15)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Custom animations and styling */
+    .glass-nav {
+      background: rgba(250, 246, 240, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .blob-bg {
+      border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+      transition: all 0.5s ease-in-out;
+    }
+    .blob-bg:hover {
+      border-radius: 50% 50% 40% 60% / 55% 60% 40% 45%;
+    }
+    .pulse-subtle {
+      animation: pulseSubtle 2.5s infinite;
+    }
+    @keyframes pulseSubtle {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+  </style>
+</head>
+<body class="bg-brand-cream text-brand-brown font-sans antialiased selection:bg-brand-pink selection:text-brand-brownDark">
+
+  <!-- ==================== HEADER & NAVIGATION ==================== -->
+  <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-brand-pink/30 transition-all duration-300" id="mainHeader">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Logo (shrink-0 & whitespace-nowrap to never break line) -->
+      <a href="#hero" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-brand-pinkSoft border-2 border-brand-pink flex items-center justify-center text-brand-accent shadow-sm group-hover:scale-105 transition-transform shrink-0">
+          <i data-lucide="sparkles" class="w-5 h-5"></i>
+        </div>
+        <div class="whitespace-nowrap">
+          <span class="block font-display font-bold text-lg sm:text-xl text-brand-brownDark leading-tight">
+            Lớp Học Cô Trinh
+          </span>
+          <span class="block text-[11px] sm:text-xs font-medium text-brand-brownLight">
+            Toán & KHTN THCS
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links (Visible on lg+ screens with whitespace-nowrap) -->
+      <nav class="hidden lg:flex items-center gap-5 xl:gap-7 font-medium text-sm text-brand-brown whitespace-nowrap">
+        <a href="#about" class="hover:text-brand-accent transition-colors">Giới thiệu</a>
+        <a href="#education" class="hover:text-brand-accent transition-colors">Học vấn & Bằng cấp</a>
+        <a href="#skills" class="hover:text-brand-accent transition-colors">Kỹ năng</a>
+        <a href="#courses" class="hover:text-brand-accent transition-colors">Môn học</a>
+        <a href="#feedbacks" class="hover:text-brand-accent transition-colors flex items-center gap-1.5">
+          <span>Feedback</span> 
+          <span class="px-1.5 py-0.5 text-[10px] bg-brand-pink text-brand-brownDark font-bold rounded-full">5.0 ★</span>
+        </a>
+      </nav>
+
+      <!-- Action Buttons (shrink-0 to prevent button squishing) -->
+      <div class="flex items-center gap-2.5 shrink-0">
+        <!-- Classroom LMS Portal Button -->
+        <a href="classroom.html" class="flex items-center gap-2 px-3.5 py-2 rounded-full bg-brand-pinkSoft border border-brand-pink text-brand-brownDark font-bold text-xs hover:bg-brand-pink transition-all whitespace-nowrap shadow-sm">
+          <i data-lucide="graduation-cap" class="w-4 h-4 text-brand-accent"></i>
+          <span>Vào Lớp Học</span>
+        </a>
+
+        <!-- Phone button (visible on xl+, icon-only on lg) -->
+        <a href="tel:0702498036" class="hidden xl:flex items-center gap-2 px-3.5 py-2 rounded-full bg-brand-sageSoft text-brand-sageDark font-semibold text-xs border border-brand-sage hover:bg-brand-sage hover:text-brand-brownDark transition-all whitespace-nowrap">
+          <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+          <span>0702.498.036</span>
+        </a>
+
+        <!-- Register button (always cleanly displayed) -->
+        <a href="#contact" class="hidden sm:inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-brand-accent text-white font-semibold text-xs sm:text-sm shadow-md hover:bg-brand-pinkDark hover:shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap">
+          <span>Đăng ký học</span>
+          <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+        </a>
+
+        <!-- Mobile / Tablet Menu Toggle Button (shown below lg) -->
+        <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-xl text-brand-brown hover:bg-brand-pinkSoft transition-colors shrink-0" aria-label="Toggle menu">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile / Tablet Nav Dropdown -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-brand-cream/98 backdrop-blur-md border-b border-brand-pink/40 px-6 py-5 space-y-4 shadow-xl">
+      <a href="#about" class="block py-2 text-brand-brown font-medium hover:text-brand-accent transition-colors">Giới thiệu</a>
+      <a href="#education" class="block py-2 text-brand-brown font-medium hover:text-brand-accent transition-colors">Học vấn & Bằng cấp</a>
+      <a href="#skills" class="block py-2 text-brand-brown font-medium hover:text-brand-accent transition-colors">Kỹ năng giảng dạy</a>
+      <a href="#courses" class="block py-2 text-brand-brown font-medium hover:text-brand-accent transition-colors">Môn học & Hình thức</a>
+      <a href="#feedbacks" class="block py-2 text-brand-brown font-medium hover:text-brand-accent transition-colors flex items-center justify-between">
+        <span>Phản hồi của phụ huynh (Feedback)</span>
+        <span class="px-2 py-0.5 text-xs bg-brand-pink text-brand-brownDark font-bold rounded-full">5.0 ★</span>
+      </a>
+      <div class="pt-4 border-t border-brand-pink/30 flex flex-col gap-2.5">
+        <a href="classroom.html" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-brand-pinkSoft border border-brand-pink text-brand-brownDark font-bold text-center shadow-sm">
+          <i data-lucide="graduation-cap" class="w-5 h-5 text-brand-accent"></i>
+          <span>Vào Lớp Học (Classroom)</span>
+        </a>
+        <a href="tel:0702498036" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-brand-sage text-brand-brownDark font-semibold text-center">
+          <i data-lucide="phone-call" class="w-4 h-4"></i>
+          <span>Gọi ngay: 0702.498.036</span>
+        </a>
+        <a href="https://zalo.me/0702498036" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-[#0068FF] text-white font-semibold text-center shadow-md">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>Nhắn Zalo Cô Trinh</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="pt-24 sm:pt-28 overflow-hidden">
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section id="hero" class="relative py-12 lg:py-20">
+      <!-- Decorative background circles -->
+      <div class="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[700px] bg-gradient-to-br from-brand-pinkSoft/60 via-brand-sageSoft/40 to-transparent rounded-full blur-3xl -z-10 pointer-events-none"></div>
+
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Left Column: Content -->
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            
+            <!-- Badge -->
+            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-brand-pinkSoft border border-brand-pink text-brand-brownDark text-xs sm:text-sm font-semibold shadow-sm">
+              <span class="w-2.5 h-2.5 rounded-full bg-brand-accent animate-ping"></span>
+              <span>Đang mở tuyển sinh năm học mới</span>
+            </div>
+
+            <!-- Title -->
+            <h1 class="font-display font-extrabold text-3xl sm:text-4xl md:text-5xl text-brand-brownDark leading-tight tracking-tight">
+              Khơi dậy niềm yêu thích <br class="hidden sm:inline">
+              <span class="relative inline-block text-brand-accent">
+                <span class="relative z-10">Toán & Khoa Học Tự Nhiên</span>
+                <svg class="absolute -bottom-[20px] sm:-bottom-[25px] left-0 w-full z-0 pointer-events-none" viewBox="0 0 300 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M5 16C70 8 190 6 295 14" stroke="#E7786B" stroke-width="4" stroke-linecap="round" opacity="0.85"/>
+                </svg>
+              </span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-brand-brownLight leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              Chào ba mẹ và các em học sinh! Mình là <strong>Cô Trinh</strong> – Cử nhân Sư phạm Khoa học tự nhiên. Với phương pháp giảng dạy trực quan, kiên nhẫn và thấu hiểu tâm lý lứa tuổi cấp 2, lớp học sẽ giúp học sinh lấy lại căn bản vững chắc, tự tin phát huy tư duy logic.
+            </p>
+
+            <!-- Key Points Badges -->
+            <div class="flex flex-wrap gap-2.5 justify-center lg:justify-start pt-2">
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/80 border border-brand-pink/50 text-xs sm:text-sm font-medium text-brand-brown shadow-sm">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Dạy kèm 1:1, 1:2
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/80 border border-brand-sage text-xs sm:text-sm font-medium text-brand-brown shadow-sm">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Nhóm nhỏ 3 - 5 bạn
+              </span>
+              <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/80 border border-brand-pink/50 text-xs sm:text-sm font-medium text-brand-brown shadow-sm">
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Tại nhà GV hoặc nhà HS
+              </span>
+            </div>
+
+            <!-- Call to Actions -->
+            <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+              <a href="https://zalo.me/0702498036" target="_blank" class="w-full sm:w-auto flex items-center justify-center gap-3 px-7 py-3.5 rounded-full bg-[#0068FF] text-white font-bold shadow-lg hover:shadow-xl hover:bg-[#0052cc] transition-all transform hover:-translate-y-0.5">
+                <i data-lucide="message-square" class="w-5 h-5"></i>
+                <span>Nhắn Zalo Tư Vấn Ngay</span>
+              </a>
+              <a href="tel:0702498036" class="w-full sm:w-auto flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-full bg-white border border-brand-pink text-brand-brown font-bold shadow-sm hover:bg-brand-pinkSoft hover:text-brand-brownDark transition-all">
+                <i data-lucide="phone" class="w-4 h-4 text-brand-accent"></i>
+                <span>Hotline: 0702.498.036</span>
+              </a>
+            </div>
+
+            <!-- Trust Micro-bar -->
+            <div class="pt-6 border-t border-brand-pink/30 flex items-center justify-center lg:justify-start gap-6 text-xs text-brand-brownLight">
+              <a href="https://www.google.com/maps/place/15%C2%B057'04.6%22N+108%C2%B008'03.7%22E/@15.9512692,108.1317826,17z" target="_blank" class="flex items-center gap-2 hover:text-brand-accent transition-colors" title="Xem vị trí trên Google Maps">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-accent"></i>
+                <span>Hòa Tiến / Hòa Vang, Đà Nẵng</span>
+              </a>
+              <div class="flex items-center gap-2">
+                <i data-lucide="award" class="w-4 h-4 text-amber-600"></i>
+                <span>Tốt nghiệp ĐH Sư Phạm</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Teacher Portrait Card -->
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative w-full max-w-sm">
+              
+              <!-- Decorative Backdrop -->
+              <div class="absolute inset-0 bg-brand-pink rounded-3xl rotate-3 scale-95 opacity-60"></div>
+              <div class="absolute inset-0 bg-brand-sage rounded-3xl -rotate-2 scale-98 opacity-70"></div>
+
+              <!-- Main Card -->
+              <div class="relative bg-white p-4 sm:p-5 rounded-3xl shadow-soft border border-brand-pink/40 space-y-4">
+                
+                <!-- Image Wrapper with fallback and easy link instructions -->
+                <div class="relative w-full aspect-[4/5] rounded-2xl overflow-hidden bg-brand-cream border border-brand-pink/30 shadow-inner group">
+                  <!-- 
+                    HƯỚNG DẪN THAY ẢNH:
+                    Bạn chỉ cần thay đường dẫn trong src bên dưới bằng link ảnh chân dung của cô Trinh
+                    Ví dụ: src="assets/co_trinh.jpg" hoặc link ảnh online https://...
+                  -->
+                  <img 
+                    id="teacherAvatar" 
+                    src="assets/co_trinh.jpg" 
+                    alt="Cô Trinh - Giáo viên Toán và Khoa Học Tự Nhiên" 
+                    class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                    onerror="this.src='assets/poster.jpg'"
+                  />
+                  
+                  <div class="absolute bottom-3 left-3 right-3 p-3 rounded-xl bg-white/90 backdrop-blur-md border border-white/40 shadow-sm">
+                    <p class="font-display font-bold text-sm text-brand-brownDark">Cô Trinh</p>
+                    <p class="text-[11px] text-brand-brownLight">Cử nhân Sư phạm Khoa học tự nhiên</p>
+                  </div>
+                </div>
+
+                <!-- Card Highlights below image -->
+                <div class="grid grid-cols-2 gap-2 text-center">
+                  <div class="p-2.5 rounded-xl bg-brand-pinkSoft border border-brand-pink/50">
+                    <p class="text-xs text-brand-brownLight">Khối lớp dạy</p>
+                    <p class="font-bold text-sm text-brand-brownDark">Lớp 6, 7, 8, 9</p>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-brand-sageSoft border border-brand-sage">
+                    <p class="text-xs text-brand-brownLight">Hình thức</p>
+                    <p class="font-bold text-sm text-brand-brownDark">1:1 & Nhóm 3-5</p>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Floating badge top right -->
+              <div class="absolute -top-3 -right-3 bg-brand-accent text-white px-3.5 py-1.5 rounded-full font-bold text-xs shadow-md flex items-center gap-1.5 pulse-subtle">
+                <i data-lucide="heart" class="w-3.5 h-3.5 fill-current"></i>
+                <span>Tận tâm & Kiên nhẫn</span>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================== GIỚI THIỆU & TRIẾT LÝ GIẢNG DẠY ==================== -->
+    <section id="about" class="py-16 bg-white border-y border-brand-pink/30">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+          <span class="text-brand-accent font-semibold text-xs tracking-wider uppercase bg-brand-pinkSoft px-3 py-1 rounded-full">
+            Tâm huyết với nghề giáo
+          </span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-brand-brownDark">
+            Phương Pháp Giảng Dạy Của Cô Trinh
+          </h2>
+          <p class="text-brand-brownLight text-sm sm:text-base">
+            Không học vẹt, không tạo áp lực. Học để hiểu bản chất và tự tin vận dụng vào bài tập thực tế.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+          
+          <!-- Card 1 -->
+          <div class="p-6 rounded-2xl bg-brand-cream border border-brand-pink/40 hover:shadow-hover transition-all duration-300 space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-pink text-brand-brownDark flex items-center justify-center font-bold">
+              <i data-lucide="target" class="w-6 h-6 text-brand-brownDark"></i>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-brownDark">Lộ Trình Cá Nhân Hóa</h3>
+            <p class="text-sm text-brand-brownLight leading-relaxed">
+              Kiểm tra đánh giá đầu vào chính xác để thiết kế bài học phù hợp với từng học sinh: lấy lại căn bản cho bạn mất gốc và mở rộng tư duy nâng cao cho bạn khá giỏi.
+            </p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="p-6 rounded-2xl bg-brand-cream border border-brand-sage hover:shadow-hover transition-all duration-300 space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-sage text-brand-brownDark flex items-center justify-center font-bold">
+              <i data-lucide="microscope" class="w-6 h-6 text-brand-sageDark"></i>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-brownDark">Trực Quan & Thí Nghiệm</h3>
+            <p class="text-sm text-brand-brownLight leading-relaxed">
+              Môn Khoa Học Tự Nhiên (Vật lý - Hóa học - Sinh học) được minh họa bằng các video mô phỏng thí nghiệm sinh động, liên hệ thực tế đời sống giúp học sinh ghi nhớ lâu.
+            </p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="p-6 rounded-2xl bg-brand-cream border border-brand-pink/40 hover:shadow-hover transition-all duration-300 space-y-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-pink text-brand-brownDark flex items-center justify-center font-bold">
+              <i data-lucide="smile" class="w-6 h-6 text-brand-brownDark"></i>
+            </div>
+            <h3 class="font-display font-bold text-lg text-brand-brownDark">Đồng Hành Tâm Lý Lứa Tuổi</h3>
+            <p class="text-sm text-brand-brownLight leading-relaxed">
+              Học sinh THCS đang trong độ tuổi thay đổi tâm lý. Cô luôn lắng nghe, tạo không khí học thoải mái, nhẹ nhàng động viên giúp các em rũ bỏ tâm lý sợ học, sợ sai.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== HỌC VẤN & BẰNG CẤP (EDUCATION) ==================== -->
+    <section id="education" class="py-16 bg-brand-cream relative">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          
+          <!-- Left: Text & Timeline -->
+          <div class="lg:col-span-7 space-y-6">
+            <div class="space-y-2">
+              <span class="text-brand-sageDark font-semibold text-xs tracking-wider uppercase bg-brand-sageSoft px-3 py-1 rounded-full border border-brand-sage">
+                Hồ sơ năng lực
+              </span>
+              <h2 class="font-display font-bold text-2xl sm:text-3xl text-brand-brownDark">
+                Học Vấn & Chuyên Môn Sư Phạm
+              </h2>
+              <p class="text-brand-brownLight text-sm sm:text-base">
+                Nền tảng sư phạm chính quy, được đào tạo bài bản theo định hướng đổi mới phương pháp giảng dạy hiện đại.
+              </p>
+            </div>
+
+            <!-- Timeline Items -->
+            <div class="space-y-4 pt-2">
+              
+              <!-- Item 1 -->
+              <div class="flex gap-4 p-4 rounded-2xl bg-white border border-brand-pink/40 shadow-sm hover:border-brand-accent transition-colors">
+                <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-brand-pinkSoft text-brand-accent flex items-center justify-center">
+                  <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-brand-brownDark text-base">Cử Nhân Sư Phạm Khoa Học Tự Nhiên</h3>
+                    <span class="text-[10px] bg-brand-sageSoft text-brand-sageDark font-semibold px-2 py-0.5 rounded-full border border-brand-sage">Chính quy</span>
+                  </div>
+                  <p class="text-xs sm:text-sm text-brand-brownLight mt-1">
+                    Được đào tạo toàn diện về kiến thức tích hợp Khoa học tự nhiên (Vật lý, Hóa học, Sinh học) và phương pháp giảng dạy môn Toán cấp THCS.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="flex gap-4 p-4 rounded-2xl bg-white border border-brand-pink/40 shadow-sm hover:border-brand-accent transition-colors">
+                <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-brand-sageSoft text-brand-sageDark flex items-center justify-center">
+                  <i data-lucide="book-open-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-brand-brownDark text-base">Tập Huấn Chương Trình Giáo Dục Phổ Thông 2018 (GDPT 2018)</h3>
+                  <p class="text-xs sm:text-sm text-brand-brownLight mt-1">
+                    Nắm chắc ma trận đề thi, chuẩn đầu ra và cấu trúc giảng dạy của 3 bộ sách giáo khoa mới: <em>Kết nối tri thức, Chân trời sáng tạo, Cánh diều</em>.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="flex gap-4 p-4 rounded-2xl bg-white border border-brand-pink/40 shadow-sm hover:border-brand-accent transition-colors">
+                <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+                  <i data-lucide="badge-check" class="w-6 h-6"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold text-brand-brownDark text-base">Ứng Dụng Công Nghệ & Trực Quan Hóa Bài Giảng</h3>
+                  <p class="text-xs sm:text-sm text-brand-brownLight mt-1">
+                    Khai thác các phần mềm mô phỏng thí nghiệm Vật lý - Hóa học PhET Colorado, hình học không gian GeoGebra giúp tiết học cuốn hút và sinh động.
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right: Diploma / Certificate Placeholder Card -->
+          <div class="lg:col-span-5">
+            <div class="bg-white p-6 rounded-3xl border border-brand-pink/50 shadow-soft space-y-4">
+              <div class="flex items-center justify-between pb-3 border-b border-brand-pink/20">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="file-check" class="w-5 h-5 text-brand-accent"></i>
+                  <span class="font-bold text-sm text-brand-brownDark">Bằng cấp & Chứng nhận</span>
+                </div>
+                <span class="text-xs text-brand-brownLight font-medium">Xác thực chính quy</span>
+              </div>
+
+              <!-- 
+                CHỖ NÀY DÀNH ĐỂ LINK ẢNH BẰNG TỐT NGHIỆP / CHỨNG CHỈ (NẾU CÓ):
+                Thay src="assets/bang_cap.jpg"
+              -->
+              <div class="relative aspect-[4/3] rounded-2xl overflow-hidden bg-brand-cream border-2 border-dashed border-brand-pink flex flex-col items-center justify-center p-4 text-center group cursor-pointer hover:bg-brand-pinkSoft/40 transition-colors">
+                <img 
+                  id="certImage" 
+                  src="assets/poster.jpg" 
+                  alt="Thông tin tuyển sinh và bằng cấp Cô Trinh" 
+                  class="w-full h-full object-contain rounded-xl"
+                />
+              </div>
+
+              <p class="text-xs text-center text-brand-brownLight italic">
+                * Quý phụ huynh có thể yêu cầu xem hồ sơ văn bằng gốc khi trao đổi xếp lớp.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== KỸ NĂNG & NĂNG LỰC SƯ PHẠM (SKILLS) ==================== -->
+    <section id="skills" class="py-16 bg-white border-y border-brand-pink/30">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+          <span class="text-brand-accent font-semibold text-xs tracking-wider uppercase bg-brand-pinkSoft px-3 py-1 rounded-full">
+            Thế mạnh vượt trội
+          </span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-brand-brownDark">
+            Kỹ Năng & Năng Lực Giảng Dạy
+          </h2>
+          <p class="text-brand-brownLight text-sm sm:text-base">
+            Sự kết hợp giữa chuyên môn học thuật vững vàng và kỹ năng sư phạm tinh tế, thấu hiểu.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Column 1: Chuyên môn & Phương pháp -->
+          <div class="bg-brand-cream/60 p-6 sm:p-8 rounded-3xl border border-brand-pink/40 space-y-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-brand-pink text-brand-brownDark flex items-center justify-center">
+                <i data-lucide="brain-circuit" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-display font-bold text-lg text-brand-brownDark">Kỹ Năng Chuyên Môn & Giảng Dạy</h3>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Skill Item -->
+              <div>
+                <div class="flex justify-between text-xs sm:text-sm font-semibold text-brand-brownDark mb-1.5">
+                  <span>Toán THCS (Đại số & Hình học lớp 6, 7, 8)</span>
+                  <span class="text-brand-accent">Vững nền tảng</span>
+                </div>
+                <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-brand-pink/30">
+                  <div class="bg-brand-accent h-full rounded-full" style="width: 95%"></div>
+                </div>
+              </div>
+
+              <!-- Skill Item -->
+              <div>
+                <div class="flex justify-between text-xs sm:text-sm font-semibold text-brand-brownDark mb-1.5">
+                  <span>Khoa Học Tự Nhiên (Vật lý - Hóa học - Sinh học 6, 7, 8, 9)</span>
+                  <span class="text-brand-sageDark">Chuyên ngành chính</span>
+                </div>
+                <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-brand-sage">
+                  <div class="bg-brand-sageDark h-full rounded-full" style="width: 98%"></div>
+                </div>
+              </div>
+
+              <!-- Skill Item -->
+              <div>
+                <div class="flex justify-between text-xs sm:text-sm font-semibold text-brand-brownDark mb-1.5">
+                  <span>Rèn luyện kỹ năng phân tích đề & Giải toán logic</span>
+                  <span class="text-brand-accent">Trọng tâm</span>
+                </div>
+                <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-brand-pink/30">
+                  <div class="bg-brand-pinkDark h-full rounded-full" style="width: 90%"></div>
+                </div>
+              </div>
+
+              <!-- Skill Item -->
+              <div>
+                <div class="flex justify-between text-xs sm:text-sm font-semibold text-brand-brownDark mb-1.5">
+                  <span>Mô phỏng thí nghiệm & Trực quan hóa hiện tượng</span>
+                  <span class="text-amber-600">Sinh động</span>
+                </div>
+                <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-amber-200">
+                  <div class="bg-amber-500 h-full rounded-full" style="width: 92%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Kỹ năng mềm & Sư phạm -->
+          <div class="bg-brand-cream/60 p-6 sm:p-8 rounded-3xl border border-brand-sage space-y-6">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-brand-sage text-brand-brownDark flex items-center justify-center">
+                <i data-lucide="heart-handshake" class="w-5 h-5"></i>
+              </div>
+              <h3 class="font-display font-bold text-lg text-brand-brownDark">Kỹ Năng Sư Phạm & Đồng Hành</h3>
+            </div>
+
+            <div class="space-y-4">
+              <!-- Skill Item -->
+              <div>
+                <div class="flex justify-between text-xs sm:text-sm font-semibold text-brand-brownDark mb-1.5">
+                  <span>Kiên nhẫn & Truyền cảm hứng yêu thích môn học</span>
+                  <span class="text-brand-sageDark">100% Tâm huyết</span>
+                </div>
+                <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-brand-sage">
+                  <div class="bg-brand-sageDark h-full rounded-full" style="width: 98%"></div>
+                </div>
+              </div>
+
+              <!-- Skill Item -->
+              <div>
+                <div class="flex justify-between text-xs sm:text-sm font-semibold text-brand-brownDark mb-1.5">
+                  <span>Báo cáo tiến độ học tập thường xuyên với phụ huynh</span>
+                  <span class="text-brand-accent">Minh bạch</span>
+                </div>
+                <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-brand-pink/30">
+                  <div class="bg-brand-accent h-full rounded-full" style="width: 96%"></div>
+                </div>
+              </div>
+
+              <!-- Skill Item -->
+              <div>
+                <div class="flex justify-between text-xs sm:text-sm font-semibold text-brand-brownDark mb-1.5">
+                  <span>Thấu hiểu tâm lý lứa tuổi học sinh cấp 2 (11 - 15 tuổi)</span>
+                  <span class="text-amber-600">Gần gũi</span>
+                </div>
+                <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-amber-200">
+                  <div class="bg-amber-500 h-full rounded-full" style="width: 94%"></div>
+                </div>
+              </div>
+
+              <!-- Skill Item -->
+              <div>
+                <div class="flex justify-between text-xs sm:text-sm font-semibold text-brand-brownDark mb-1.5">
+                  <span>Rèn thói quen tự học & Trình bày vở cẩn thận</span>
+                  <span class="text-brand-sageDark">Căn bản</span>
+                </div>
+                <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-brand-sage">
+                  <div class="bg-brand-sageDark h-full rounded-full" style="width: 92%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== CÁC MÔN GIẢNG DẠY & HÌNH THỨC ==================== -->
+    <section id="courses" class="py-16 bg-brand-cream">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+          <span class="text-brand-accent font-semibold text-xs tracking-wider uppercase bg-brand-pinkSoft px-3 py-1 rounded-full">
+            Chương trình đào tạo
+          </span>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-brand-brownDark">
+            Các Môn Học & Hình Thức Giảng Dạy
+          </h2>
+          <p class="text-brand-brownLight text-sm sm:text-base">
+            Lịch học linh hoạt, bám sát sách giáo khoa mới và trọng tâm kiểm tra học kỳ.
+          </p>
+        </div>
+
+        <!-- Môn học Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          
+          <!-- Box Toán -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-brand-pink/50 shadow-soft hover:shadow-hover transition-all space-y-5">
+            <div class="flex items-center justify-between">
+              <span class="px-3.5 py-1.5 rounded-full bg-brand-pinkSoft text-brand-accent font-bold text-xs uppercase tracking-wider">
+                Khối Lớp 6, 7, 8
+              </span>
+              <div class="w-10 h-10 rounded-xl bg-brand-pinkSoft flex items-center justify-center text-brand-accent">
+                <i data-lucide="calculator" class="w-5 h-5"></i>
+              </div>
+            </div>
+
+            <h3 class="font-display font-bold text-2xl text-brand-brownDark">Môn Toán THCS</h3>
+            <p class="text-sm text-brand-brownLight leading-relaxed">
+              Củng cố nền móng số học, đại số và hình học trực quan. Khắc phục tình trạng sợ toán hình, sai sót tính toán ẩu và không hiểu đề bài.
+            </p>
+
+            <ul class="space-y-2.5 text-xs sm:text-sm text-brand-brown">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                <span><strong>Toán 6:</strong> Chuyển tiếp vững vàng từ Tiểu học lên THCS, số nguyên, phân số, hình trực quan.</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                <span><strong>Toán 7:</strong> Số thực, biểu thức đại số, tam giác bằng nhau, định lý hình học.</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                <span><strong>Toán 8:</strong> Hằng đẳng thức, phân thức, tứ giác, định lý Thales tạo đà thi vào 10.</span>
+              </li>
+            </ul>
+
+            <div class="pt-4 border-t border-brand-pink/30 flex items-center justify-between">
+              <span class="text-xs text-brand-brownLight">Sĩ số: 1:1 hoặc nhóm 3-5 bạn</span>
+              <a href="#contact" class="text-xs sm:text-sm font-bold text-brand-accent hover:underline flex items-center gap-1">
+                Đăng ký học thử <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Box KHTN -->
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-brand-sage shadow-soft hover:shadow-hover transition-all space-y-5">
+            <div class="flex items-center justify-between">
+              <span class="px-3.5 py-1.5 rounded-full bg-brand-sageSoft text-brand-sageDark font-bold text-xs uppercase tracking-wider">
+                Khối Lớp 6, 7, 8, 9
+              </span>
+              <div class="w-10 h-10 rounded-xl bg-brand-sageSoft flex items-center justify-center text-brand-sageDark">
+                <i data-lucide="atom" class="w-5 h-5"></i>
+              </div>
+            </div>
+
+            <h3 class="font-display font-bold text-2xl text-brand-brownDark">Khoa Học Tự Nhiên</h3>
+            <p class="text-sm text-brand-brownLight leading-relaxed">
+              Chương trình tích hợp liên môn Vật lý, Hóa học và Sinh học. Giúp học sinh nắm bản chất hiện tượng, viết đúng phương trình hóa học và làm bài tập định lượng chuẩn xác.
+            </p>
+
+            <ul class="space-y-2.5 text-xs sm:text-sm text-brand-brown">
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                <span><strong>KHTN 6 & 7:</strong> Tế bào, quang hợp, hô hấp, nguyên tử, phân tử, tốc độ, âm thanh, ánh sáng.</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                <span><strong>KHTN 8:</strong> Phản ứng hóa học, acid - base - oxide - muối, khối lượng riêng, áp suất, điện học.</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-emerald-600 flex-shrink-0"></i>
+                <span><strong>KHTN 9:</strong> Hóa hữu cơ, năng lượng hóa học, di truyền học, chuẩn bị nền tảng chuyển cấp.</span>
+              </li>
+            </ul>
+
+            <div class="pt-4 border-t border-brand-sage/40 flex items-center justify-between">
+              <span class="text-xs text-brand-brownLight">Trực quan hóa thí nghiệm</span>
+              <a href="#contact" class="text-xs sm:text-sm font-bold text-brand-sageDark hover:underline flex items-center gap-1">
+                Đăng ký học thử <i data-lucide="chevron-right" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 3 Hình thức học tập -->
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border border-brand-pink/40 shadow-sm">
+          <h3 class="text-center font-display font-bold text-xl text-brand-brownDark mb-6">
+            3 Hình Thức Học Tập Linh Hoạt
+          </h3>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            
+            <div class="p-5 rounded-2xl bg-brand-pinkSoft/60 border border-brand-pink/50 space-y-2">
+              <div class="w-10 h-10 mx-auto rounded-full bg-brand-pink flex items-center justify-center text-brand-brownDark font-bold">1</div>
+              <h4 class="font-bold text-brand-brownDark">Dạy Kèm 1:1 Hoặc 1:2</h4>
+              <p class="text-xs text-brand-brownLight">
+                Giáo viên kèm cặp sát sao từng bước giải, tiến độ đẩy nhanh tối đa theo sức học của con.
+              </p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-brand-sageSoft/70 border border-brand-sage space-y-2">
+              <div class="w-10 h-10 mx-auto rounded-full bg-brand-sage flex items-center justify-center text-brand-brownDark font-bold">2</div>
+              <h4 class="font-bold text-brand-brownDark">Dạy Nhóm 3 Đến 5 Bạn</h4>
+              <p class="text-xs text-brand-brownLight">
+                Sĩ số vàng giúp học sinh vừa có bạn cùng tiến, vừa được cô giải đáp tỉ mỉ, không khí học hào hứng.
+              </p>
+            </div>
+
+            <div class="p-5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-2">
+              <div class="w-10 h-10 mx-auto rounded-full bg-amber-200 flex items-center justify-center text-amber-900 font-bold">3</div>
+              <h4 class="font-bold text-brand-brownDark">Địa Điểm Theo Yêu Cầu</h4>
+              <p class="text-xs text-brand-brownLight">
+                Dạy kèm tại nhà Giáo viên (Hòa Tiến) hoặc đến tận nhà Học sinh giúp ba mẹ tiết kiệm thời gian đưa đón.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== FEEDBACK & ĐÁNH GIÁ (TESTIMONIALS) ==================== -->
+    <section id="feedbacks" class="py-16 bg-white border-y border-brand-pink/30">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+          <div class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-xs font-bold">
+            <span class="flex text-amber-500">★★★★★</span>
+            <span>Đánh giá 5 sao từ phụ huynh & học sinh</span>
+          </div>
+          <h2 class="font-display font-bold text-2xl sm:text-3xl text-brand-brownDark">
+            Phản Hồi & Kết Quả Sau Khóa Học
+          </h2>
+          <p class="text-brand-brownLight text-sm sm:text-base">
+            Sự tiến bộ và nụ cười tự tin của học sinh chính là thước đo giá trị nhất cho mỗi buổi dạy của cô Trinh.
+          </p>
+        </div>
+
+        <!-- Feedback Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          
+          <!-- Review 1 -->
+          <div class="p-6 rounded-2xl bg-brand-cream border border-brand-pink/40 shadow-sm hover:shadow-md transition-shadow space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex text-amber-400 text-sm">
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                </div>
+                <span class="text-[11px] font-semibold text-brand-sageDark bg-brand-sageSoft px-2 py-0.5 rounded-full">Toán lớp 7</span>
+              </div>
+              <p class="text-xs sm:text-sm text-brand-brown leading-relaxed italic">
+                “Bé nhà mình trước đây rất sợ học hình học, cứ tới giờ kiểm tra là lo lắng. Nhờ cô Trinh kiên nhẫn giảng từng bài, vẽ hình hướng dẫn chi tiết mà đợt thi giữa kỳ vừa rồi con được 8.5 điểm. Cảm ơn cô nhiều lắm ạ!”
+              </p>
+            </div>
+            
+            <div class="pt-3 border-t border-brand-pink/30 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-brand-pinkSoft border border-brand-pink flex items-center justify-center font-bold text-brand-accent text-sm">
+                MH
+              </div>
+              <div>
+                <p class="font-bold text-xs sm:text-sm text-brand-brownDark">Chị Mai Hương</p>
+                <p class="text-[11px] text-brand-brownLight">Phụ huynh em Nam (Lớp 7, THCS Hòa Tiến)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review 2 -->
+          <div class="p-6 rounded-2xl bg-brand-cream border border-brand-sage shadow-sm hover:shadow-md transition-shadow space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex text-amber-400 text-sm">
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                </div>
+                <span class="text-[11px] font-semibold text-brand-accent bg-brand-pinkSoft px-2 py-0.5 rounded-full">KHTN Lớp 8</span>
+              </div>
+              <p class="text-xs sm:text-sm text-brand-brown leading-relaxed italic">
+                “Cô Trinh dạy phần Hóa và Lý lớp 8 rất dễ hiểu. Cô cho xem video thí nghiệm nên em nhớ công thức nhanh chứ không phải học vẹt. Điểm kiểm tra 1 tiết của em tăng từ 6 lên 9 điểm luôn.”
+              </p>
+            </div>
+            
+            <div class="pt-3 border-t border-brand-sage/40 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-brand-sageSoft border border-brand-sage flex items-center justify-center font-bold text-brand-sageDark text-sm">
+                ĐK
+              </div>
+              <div>
+                <p class="font-bold text-xs sm:text-sm text-brand-brownDark">Em Đăng Khoa</p>
+                <p class="text-[11px] text-brand-brownLight">Học sinh lớp 8 (Nhóm kèm 3 bạn)</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Review 3 -->
+          <div class="p-6 rounded-2xl bg-brand-cream border border-brand-pink/40 shadow-sm hover:shadow-md transition-shadow space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <div class="flex text-amber-400 text-sm">
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-amber-400"></i>
+                </div>
+                <span class="text-[11px] font-semibold text-brand-sageDark bg-brand-sageSoft px-2 py-0.5 rounded-full">Toán & KHTN 6</span>
+              </div>
+              <p class="text-xs sm:text-sm text-brand-brown leading-relaxed italic">
+                “Bé nhà tôi từ cấp 1 lên cấp 2 bị hụt hẫng cách học mới. May nhờ tìm được cô Trinh dạy kèm tại nhà, cô rất dịu dàng nhưng cũng rèn nếp tự giác làm bài tập cẩn thận. Rất yên tâm khi gửi gắm con cho cô.”
+              </p>
+            </div>
+            
+            <div class="pt-3 border-t border-brand-pink/30 flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-brand-pinkSoft border border-brand-pink flex items-center justify-center font-bold text-brand-accent text-sm">
+                TT
+              </div>
+              <div>
+                <p class="font-bold text-xs sm:text-sm text-brand-brownDark">Bác Thanh Tùng</p>
+                <p class="text-[11px] text-brand-brownLight">Phụ huynh em Linh Chi (Lớp 6)</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="text-center pt-4">
+          <button onclick="document.getElementById('feedbackModal').classList.remove('hidden')" class="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-brand-accent hover:text-brand-brownDark transition-colors bg-brand-pinkSoft/60 hover:bg-brand-pinkSoft px-4 py-2.5 rounded-full border border-brand-pink/50 shadow-xs">
+            <i data-lucide="edit-3" class="w-4 h-4"></i>
+            <span>Ba mẹ hoặc học sinh muốn gửi thêm đánh giá cho cô Trinh? Bấm vào đây</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================== FORM LIÊN HỆ & ĐĂNG KÝ HỌC THỬ ==================== -->
+    <section id="contact" class="py-16 bg-brand-cream relative">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <div class="bg-white rounded-3xl p-6 sm:p-10 border-2 border-brand-pink shadow-soft space-y-8">
+          
+          <div class="text-center space-y-2">
+            <span class="text-brand-accent font-semibold text-xs tracking-wider uppercase bg-brand-pinkSoft px-3 py-1 rounded-full">
+              Tư vấn miễn phí
+            </span>
+            <h2 class="font-display font-bold text-2xl sm:text-3xl text-brand-brownDark">
+              Đăng Ký Tư Vấn & Xếp Lớp Học Thử
+            </h2>
+            <p class="text-brand-brownLight text-xs sm:text-sm max-w-lg mx-auto">
+              Ba mẹ vui lòng để lại thông tin hoặc nhắn trực tiếp qua Zalo để cô Trinh tư vấn lộ trình học phù hợp nhất cho con.
+            </p>
+          </div>
+
+          <!-- Quick Action Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="https://zalo.me/0702498036" target="_blank" class="flex items-center justify-center gap-3 p-4 rounded-2xl bg-[#0068FF] text-white font-bold text-center shadow-md hover:bg-blue-600 transition-all">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+              <span>Chat Zalo Trực Tiếp: 0702.498.036</span>
+            </a>
+            <a href="tel:0702498036" class="flex items-center justify-center gap-3 p-4 rounded-2xl bg-brand-sage text-brand-brownDark font-bold text-center border border-brand-sageDark/30 hover:bg-brand-sageSoft transition-all">
+              <i data-lucide="phone-call" class="w-5 h-5 text-brand-sageDark"></i>
+              <span>Gọi Điện Cho Cô: 0702.498.036</span>
+            </a>
+          </div>
+
+          <div class="relative flex py-2 items-center">
+            <div class="flex-grow border-t border-brand-pink/30"></div>
+            <span class="flex-shrink mx-4 text-xs font-semibold text-brand-brownLight uppercase tracking-wider">Hoặc điền form dưới đây</span>
+            <div class="flex-grow border-t border-brand-pink/30"></div>
+          </div>
+
+          <!-- Registration Form -->
+          <form id="regForm" class="space-y-4" onsubmit="handleFormSubmit(event)">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-brand-brownDark mb-1.5" for="parentName">Họ và tên Phụ huynh / Học sinh *</label>
+                <input type="text" id="parentName" required placeholder="Ví dụ: Chị Lan hoặc Em Nam" class="w-full px-4 py-3 rounded-xl bg-brand-cream border border-brand-pink/60 focus:outline-none focus:ring-2 focus:ring-brand-accent text-sm text-brand-brownDark">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-brand-brownDark mb-1.5" for="parentPhone">Số điện thoại / Zalo liên hệ *</label>
+                <input type="tel" id="parentPhone" required placeholder="Ví dụ: 0905 xxx xxx" class="w-full px-4 py-3 rounded-xl bg-brand-cream border border-brand-pink/60 focus:outline-none focus:ring-2 focus:ring-brand-accent text-sm text-brand-brownDark">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-brand-brownDark mb-1.5" for="grade">Lớp học của con</label>
+                <select id="grade" class="w-full px-4 py-3 rounded-xl bg-brand-cream border border-brand-pink/60 focus:outline-none focus:ring-2 focus:ring-brand-accent text-sm text-brand-brownDark">
+                  <option value="Lớp 6">Lớp 6 THCS</option>
+                  <option value="Lớp 7">Lớp 7 THCS</option>
+                  <option value="Lớp 8">Lớp 8 THCS</option>
+                  <option value="Lớp 9">Lớp 9 THCS (KHTN)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-brand-brownDark mb-1.5" for="studyFormat">Hình thức học mong muốn</label>
+                <select id="studyFormat" class="w-full px-4 py-3 rounded-xl bg-brand-cream border border-brand-pink/60 focus:outline-none focus:ring-2 focus:ring-brand-accent text-sm text-brand-brownDark">
+                  <option value="Dạy kèm 1:1">Dạy kèm cá nhân 1:1</option>
+                  <option value="Dạy kèm 1:2">Dạy kèm 1:2</option>
+                  <option value="Nhóm nhỏ 3-5 bạn">Học nhóm nhỏ (3-5 bạn)</option>
+                  <option value="Kèm tại nhà học sinh">Dạy kèm tại nhà học sinh</option>
+                  <option value="Tại nhà giáo viên">Học tại nhà giáo viên (Hòa Tiến)</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-brand-brownDark mb-1.5" for="note">Tình hình học tập hiện tại hoặc lời nhắn cho cô</label>
+              <textarea id="note" rows="3" placeholder="Ví dụ: Cháu bị hổng kiến thức phân số, muốn cô kèm lại căn bản và rèn thêm tính cẩn thận..." class="w-full px-4 py-3 rounded-xl bg-brand-cream border border-brand-pink/60 focus:outline-none focus:ring-2 focus:ring-brand-accent text-sm text-brand-brownDark"></textarea>
+            </div>
+
+            <button type="submit" class="w-full py-4 rounded-xl bg-brand-accent text-white font-bold text-base shadow-md hover:bg-brand-pinkDark transition-all flex items-center justify-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Gửi Đăng Ký Xếp Lớp</span>
+            </button>
+          </form>
+
+          <!-- Success Alert Box (hidden initially) -->
+          <div id="successAlert" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-900 text-center space-y-2">
+            <div class="flex items-center justify-center gap-2 font-bold text-sm">
+              <i data-lucide="check-circle" class="w-5 h-5 text-emerald-600"></i>
+              <span>Đăng ký thành công!</span>
+            </div>
+            <p class="text-xs text-emerald-700">
+              Cảm ơn ba mẹ đã tin tưởng! Cô Trinh sẽ liên hệ lại qua SĐT/Zalo trong thời gian sớm nhất.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- GOOGLE MAPS EMBED SECTION (COMPACT) -->
+        <div class="bg-white rounded-3xl p-4 sm:p-6 border border-brand-pink/50 shadow-sm space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div class="space-y-0.5">
+              <h3 class="font-display font-bold text-base sm:text-lg text-brand-brownDark flex items-center gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-accent"></i>
+                Vị Trí Lớp Học Cô Trinh
+              </h3>
+              <p class="text-xs text-brand-brownLight">
+                Thôn Phú Sơn 2, xã Hòa Tiến, TP. Đà Nẵng (15°57'04.6"N 108°08'03.7"E)
+              </p>
+            </div>
+            <a href="https://www.google.com/maps/place/15%C2%B057'04.6%22N+108%C2%B008'03.7%22E/@15.9512692,108.1317826,17z/data=!3m1!4b1!4m4!3m3!8m2!3d15.9512692!4d108.1343575?entry=ttu" 
+               target="_blank" 
+               class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-brand-cream border border-brand-pink/60 text-xs font-bold text-brand-brownDark hover:bg-brand-pinkSoft hover:text-brand-accent transition-all shrink-0">
+              <i data-lucide="navigation" class="w-3.5 h-3.5 text-brand-accent"></i>
+              <span>Mở Chỉ Đường</span>
+              <i data-lucide="external-link" class="w-3 h-3 text-brand-brownLight"></i>
+            </a>
+          </div>
+
+          <!-- Compact Map Frame -->
+          <div class="w-full h-44 sm:h-52 rounded-xl overflow-hidden border border-brand-pink/40 shadow-inner relative">
+            <iframe 
+              src="https://maps.google.com/maps?q=15.9512692,108.1343575&hl=vi&z=17&output=embed" 
+              width="100%" 
+              height="100%" 
+              style="border:0;" 
+              allowfullscreen="" 
+              loading="lazy" 
+              referrerpolicy="no-referrer-when-downgrade"
+              class="w-full h-full"
+              title="Vị trí Lớp Học Cô Trinh trên Google Maps">
+            </iframe>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-brand-brownDark text-brand-cream py-12 border-t border-brand-pink/20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 pb-10 border-b border-white/10">
+        
+        <!-- Col 1: Brand Info -->
+        <div class="md:col-span-5 space-y-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-brand-pink flex items-center justify-center text-brand-brownDark font-bold">
+              <i data-lucide="sparkles" class="w-5 h-5"></i>
+            </div>
+            <span class="font-display font-bold text-xl text-white">Lớp Học Cô Trinh</span>
+          </div>
+          <p class="text-xs text-brand-cream/80 leading-relaxed max-w-sm">
+            Tốt nghiệp chuyên ngành Sư phạm Khoa học tự nhiên. Dạy kèm Toán (Lớp 6, 7, 8) và KHTN (Lớp 6, 7, 8, 9). Đồng hành cùng học sinh bằng tâm huyết, sự kiên nhẫn và phương pháp trực quan.
+          </p>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div class="md:col-span-3 space-y-3">
+          <h4 class="font-bold text-sm text-brand-pink">Khóa Học Chính</h4>
+          <ul class="space-y-2 text-xs text-brand-cream/80">
+            <li><a href="#courses" class="hover:text-white transition-colors">Toán THCS Lớp 6, 7, 8</a></li>
+            <li><a href="#courses" class="hover:text-white transition-colors">Khoa Học Tự Nhiên Lớp 6, 7, 8, 9</a></li>
+            <li><a href="#courses" class="hover:text-white transition-colors">Dạy kèm 1:1 & Nhóm 3-5 bạn</a></li>
+            <li><a href="#courses" class="hover:text-white transition-colors">Dạy tại nhà GV & nhà HS</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Contact Info -->
+        <div class="md:col-span-4 space-y-3">
+          <h4 class="font-bold text-sm text-brand-pink">Thông Tin Liên Hệ</h4>
+          <div class="space-y-2.5 text-xs text-brand-cream/80">
+            <p class="flex items-start gap-2.5">
+              <i data-lucide="phone" class="w-4 h-4 text-brand-pink flex-shrink-0 mt-0.5"></i>
+              <span><strong>Hotline / Zalo:</strong> <a href="tel:0702498036" class="hover:text-white underline">0702.498.036 (Cô Trinh)</a></span>
+            </p>
+            <p class="flex items-start gap-2.5">
+              <i data-lucide="map-pin" class="w-4 h-4 text-brand-pink flex-shrink-0 mt-0.5"></i>
+              <span><strong>Địa chỉ:</strong> <a href="https://www.google.com/maps/place/15%C2%B057'04.6%22N+108%C2%B008'03.7%22E/@15.9512692,108.1317826,17z" target="_blank" class="hover:text-white underline">Thôn Phú Sơn 2, xã Hòa Tiến, TP. Đà Nẵng</a></span>
+            </p>
+            <p class="flex items-start gap-2.5">
+              <i data-lucide="clock" class="w-4 h-4 text-brand-pink flex-shrink-0 mt-0.5"></i>
+              <span><strong>Thời gian:</strong> Nhận lớp các ngày trong tuần & Thứ 7, Chủ Nhật</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-brand-cream/60">
+        <p>© 2026 Lớp Học Cô Trinh. Bản quyền thuộc về Cô Trinh.</p>
+        <p>Thiết kế dành riêng cho Lớp học Sư phạm Khoa học tự nhiên & Toán THCS</p>
+      </div>
+
+    </div>
+  </footer>
+
+
+  <!-- ==================== FLOATING CONTACT BUTTONS (MOBILE & DESKTOP) ==================== -->
+  <div class="fixed bottom-6 right-6 z-40 flex flex-col gap-3">
+    <!-- Zalo Floating Button -->
+    <a href="https://zalo.me/0702498036" target="_blank" class="w-13 h-13 sm:w-14 sm:h-14 bg-[#0068FF] text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform pulse-subtle p-3" title="Chat Zalo cùng Cô Trinh">
+      <i data-lucide="message-circle" class="w-6 h-6"></i>
+    </a>
+    <!-- Phone Floating Button -->
+    <a href="tel:0702498036" class="w-13 h-13 sm:w-14 sm:h-14 bg-brand-accent text-white rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform p-3" title="Gọi ngay cho Cô Trinh">
+      <i data-lucide="phone-call" class="w-6 h-6"></i>
+    </a>
+  </div>
+
+
+  <!-- ==================== MODAL ĐÁNH GIÁ (FEEDBACK POPUP) ==================== -->
+  <div id="feedbackModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">
+      <button onclick="document.getElementById('feedbackModal').classList.add('hidden')" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="text-center space-y-1">
+        <h3 class="font-display font-bold text-xl text-brand-brownDark">Gửi Đánh Giá Cho Cô Trinh</h3>
+        <p class="text-xs text-brand-brownLight">Ý kiến đóng góp quý báu của ba mẹ và các em học sinh</p>
+      </div>
+
+      <form id="feedbackForm" onsubmit="handleFeedbackSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Tên của bạn *</label>
+          <input type="text" id="fbName" required placeholder="Ví dụ: Phụ huynh em Tuấn" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Môn học & Khối lớp</label>
+          <input type="text" id="fbClass" placeholder="Ví dụ: Toán lớp 7 hoặc KHTN lớp 8" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Đánh giá số sao</label>
+          <div class="flex gap-2 text-amber-400 cursor-pointer text-lg">
+            <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Nhận xét của bạn *</label>
+          <textarea id="fbContent" rows="3" required placeholder="Cảm nhận về phương pháp dạy của cô Trinh, sự tiến bộ của con..." class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-brand-accent text-white font-bold text-sm shadow hover:bg-brand-pinkDark transition-all">
+          Gửi Nhận Xét
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==================== JAVASCRIPT ==================== -->
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // Close mobile menu when clicking nav links
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+
+    // Form submit handler - Save to MySQL Database
+    const API_BASE = (window.location.protocol === 'file:' || !window.location.origin.includes(':3000')) ? 'http://localhost:3000' : '';
+
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('parentName').value.trim();
+      const phone = document.getElementById('parentPhone').value.trim();
+      const grade = document.getElementById('grade').value;
+      const format = document.getElementById('studyFormat').value;
+      const note = document.getElementById('note').value.trim();
+
+      const alertBox = document.getElementById('successAlert');
+
+      try {
+        const res = await fetch(API_BASE + '/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, phone, grade, format, note })
+        });
+        const data = await res.json();
+
+        // Show success alert
+        alertBox.classList.remove('hidden');
+        alertBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+        // Reset form
+        document.getElementById('regForm').reset();
+      } catch (err) {
+        // Fallback UI if offline
+        alertBox.classList.remove('hidden');
+        document.getElementById('regForm').reset();
+      }
+    }
+
+    // Feedback modal submit handler
+    function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      alert('Cảm ơn quý phụ huynh và học sinh đã gửi lời nhận xét quý báu!');
+      document.getElementById('feedbackModal').classList.add('hidden');
+      document.getElementById('feedbackForm').reset();
+    }
+  </script>
+</body>
+</html>

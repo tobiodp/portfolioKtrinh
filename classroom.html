@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classroom LMS | Lớp Học Cô Trinh</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cream: '#FAF6F0',
+              creamDark: '#F3EDE2',
+              pink: '#F7C5CC',
+              pinkSoft: '#FDF0F2',
+              pinkDark: '#E08390',
+              sage: '#CDE4DC',
+              sageSoft: '#EDF6F3',
+              sageDark: '#5E9385',
+              brown: '#533E2D',
+              brownLight: '#7E6857',
+              brownDark: '#352417',
+              accent: '#E7786B'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Quicksand"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Toast styles */
+    #toastContainer {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast-item {
+      pointer-events: auto;
+      animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-brand-cream text-brand-brown font-sans antialiased min-h-screen flex flex-col selection:bg-brand-pink selection:text-brand-brownDark">
+
+  <!-- ==================== HEADER ==================== -->
+  <header class="bg-white/95 backdrop-blur-md border-b border-brand-pink/30 sticky top-0 z-40 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+      
+      <!-- Brand & Home Button -->
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="flex items-center gap-1.5 text-xs font-bold text-brand-brownLight hover:text-brand-accent px-3 py-2 rounded-xl hover:bg-brand-pinkSoft transition-colors" title="Trở về trang landing page">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span class="hidden sm:inline">Về Trang Chủ</span>
+        </a>
+        <div class="h-6 w-px bg-brand-pink/40 hidden sm:block"></div>
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-brand-pinkSoft border border-brand-pink flex items-center justify-center text-brand-accent shadow-sm">
+            <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h1 class="font-display font-bold text-lg sm:text-xl text-brand-brownDark leading-tight">
+              Classroom Cô Trinh
+            </h1>
+            <p class="text-[11px] font-medium text-brand-brownLight">Cổng Học Tập & Quản Lý Giảng Dạy</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Status Area -->
+      <div id="userHeaderArea" class="flex items-center gap-3">
+        <!-- Rendered by JS -->
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTAINER ==================== -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ==================== 1. LOGIN SCREEN ==================== -->
+    <section id="loginSection" class="max-w-md mx-auto my-10">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-brand-pink shadow-lg space-y-6">
+        
+        <div class="text-center space-y-2">
+          <div class="w-14 h-14 mx-auto rounded-2xl bg-brand-pinkSoft border border-brand-pink flex items-center justify-center text-brand-accent">
+            <i data-lucide="shield-check" class="w-7 h-7"></i>
+          </div>
+          <h2 class="font-display font-bold text-2xl text-brand-brownDark">Đăng Nhập Lớp Học</h2>
+          <p class="text-xs text-brand-brownLight">Dành cho Giáo viên & Học sinh đã được cấp tài khoản</p>
+        </div>
+
+        <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-brand-brownDark mb-1.5" for="username">Tên đăng nhập / Tài khoản</label>
+            <input type="text" id="username" required placeholder="Nhập tên tài khoản..." class="w-full px-4 py-3 rounded-xl bg-brand-cream border border-brand-pink/50 focus:outline-none focus:ring-2 focus:ring-brand-accent text-sm text-brand-brownDark">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-brand-brownDark mb-1.5" for="password">Mật khẩu</label>
+            <div class="relative">
+              <input type="password" id="password" required placeholder="Nhập mật khẩu..." class="w-full px-4 py-3 pr-11 rounded-xl bg-brand-cream border border-brand-pink/50 focus:outline-none focus:ring-2 focus:ring-brand-accent text-sm text-brand-brownDark">
+              <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-gray-400 hover:text-brand-brownDark focus:outline-none">
+                <i data-lucide="eye" id="togglePasswordIcon" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="loginError" class="hidden text-xs text-red-600 bg-red-50 p-3 rounded-xl border border-red-200"></div>
+
+          <button type="submit" id="loginBtn" class="w-full py-3.5 rounded-xl bg-brand-accent text-white font-bold text-sm shadow hover:bg-brand-pinkDark transition-all flex items-center justify-center gap-2">
+            <i data-lucide="log-in" class="w-4 h-4"></i>
+            <span>Đăng Nhập Vào Hệ Thống</span>
+          </button>
+        </form>
+
+        <!-- Help note for students/parents -->
+        <div class="pt-3 border-t border-brand-pink/30 text-center">
+          <p class="text-xs text-brand-brownLight">
+            Chưa có tài khoản hoặc quên mật khẩu? Vui lòng liên hệ cô Trinh qua Zalo: 
+            <a href="https://zalo.me/0702498036" target="_blank" class="font-bold text-brand-accent underline">0702.498.036</a>
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==================== 2. TEACHER PORTAL ==================== -->
+    <section id="teacherPortal" class="hidden space-y-6">
+      
+      <!-- Teacher Stats Overview Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4" id="teacherStatsCards">
+        <div class="bg-white p-4 rounded-2xl border border-brand-pink/40 shadow-sm space-y-1">
+          <span class="text-xs text-brand-brownLight font-medium">Lớp giảng dạy</span>
+          <p class="font-display font-extrabold text-2xl text-brand-brownDark" id="statClasses">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-brand-sage shadow-sm space-y-1">
+          <span class="text-xs text-brand-brownLight font-medium">Tổng số học sinh</span>
+          <p class="font-display font-extrabold text-2xl text-brand-sageDark" id="statStudents">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-brand-pink/40 shadow-sm space-y-1">
+          <span class="text-xs text-brand-brownLight font-medium">Bài tập đang giao</span>
+          <p class="font-display font-extrabold text-2xl text-brand-accent" id="statAssignments">0</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-amber-200 shadow-sm space-y-1">
+          <span class="text-xs text-brand-brownLight font-medium">Đăng ký mới từ web</span>
+          <p class="font-display font-extrabold text-2xl text-amber-600" id="statLeads">0</p>
+        </div>
+      </div>
+
+      <!-- Navigation Bar Tabs -->
+      <div class="bg-white rounded-2xl p-3 border border-brand-pink/40 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3">
+        
+        <!-- Tabs -->
+        <div class="flex flex-wrap gap-2">
+          <button onclick="switchTeacherTab('classes')" id="tabBtn-classes" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-accent text-white flex items-center gap-2 transition-all">
+            <i data-lucide="book-open" class="w-4 h-4"></i>
+            <span>Lớp Học</span>
+          </button>
+          <button onclick="switchTeacherTab('assignments')" id="tabBtn-assignments" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-cream text-brand-brown hover:bg-brand-pinkSoft flex items-center gap-2 transition-all">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            <span>Bài Tập & Chấm Điểm</span>
+          </button>
+          <button onclick="switchTeacherTab('schedules')" id="tabBtn-schedules" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-cream text-brand-brown hover:bg-brand-pinkSoft flex items-center gap-2 transition-all">
+            <i data-lucide="calendar" class="w-4 h-4"></i>
+            <span>Lịch Dạy Tuần</span>
+          </button>
+          <button onclick="switchTeacherTab('leads')" id="tabBtn-leads" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-cream text-brand-brown hover:bg-brand-pinkSoft flex items-center gap-2 transition-all">
+            <i data-lucide="user-check" class="w-4 h-4"></i>
+            <span>Phụ Huynh Đăng Ký</span>
+            <span id="leadBadgeCount" class="hidden px-1.5 py-0.2 rounded-full bg-amber-500 text-white text-[10px] font-extrabold">0</span>
+          </button>
+          <button onclick="switchTeacherTab('reminders')" id="tabBtn-reminders" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-cream text-brand-brown hover:bg-brand-pinkSoft flex items-center gap-2 transition-all">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            <span>Nhắc Lịch & Email</span>
+          </button>
+        </div>
+
+        <!-- Quick Action on Top Bar -->
+        <div class="flex items-center gap-2">
+          <button onclick="openModal('createClassModal')" class="px-3.5 py-2 rounded-xl bg-brand-sageSoft text-brand-sageDark border border-brand-sage hover:bg-brand-sage font-bold text-xs flex items-center gap-1.5 transition-all">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>Tạo Lớp</span>
+          </button>
+          <button onclick="openModal('createAssignmentModal')" class="px-3.5 py-2 rounded-xl bg-brand-accent text-white font-bold text-xs flex items-center gap-1.5 hover:bg-brand-pinkDark transition-all">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Giao Bài Tập</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Tab Content: Classes Management -->
+      <div id="teacherTab-classes" class="space-y-4">
+        <div class="flex items-center justify-between">
+          <h2 class="font-display font-bold text-xl text-brand-brownDark">Danh Sách Lớp Giảng Dạy</h2>
+          <span class="text-xs text-brand-brownLight">Bấm "Thêm học sinh" để xếp học sinh vào lớp</span>
+        </div>
+        <div id="classesList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Tab Content: Assignments Management -->
+      <div id="teacherTab-assignments" class="hidden space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="font-display font-bold text-xl text-brand-brownDark flex items-center gap-2">
+              <span>Bài Tập Đã Giao</span>
+              <span id="assignCountBadge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-brand-pinkSoft text-brand-accent">0 bài</span>
+            </h2>
+            <p class="text-xs text-brand-brownLight">Cô có thể xem lại toàn bộ đề bài, ảnh bài tập và danh sách học sinh nộp</p>
+          </div>
+          <div class="flex items-center gap-2.5">
+            <select id="assignmentFilterSelect" onchange="filterTeacherAssignments(this.value)" class="px-3 py-2 rounded-xl bg-white border border-brand-pink/50 text-xs font-medium text-brand-brownDark">
+              <option value="all">Tất cả các lớp</option>
+            </select>
+            <button onclick="openModal('createAssignmentModal')" class="px-4 py-2 rounded-xl bg-brand-accent text-white font-bold text-xs flex items-center gap-1.5 hover:bg-brand-pinkDark shrink-0">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Giao Bài Mới</span>
+            </button>
+          </div>
+        </div>
+        <div id="teacherAssignmentsList" class="space-y-4">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Tab Content: Teacher Schedules -->
+      <div id="teacherTab-schedules" class="hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-display font-bold text-xl text-brand-brownDark">Thời Khóa Biểu & Lịch Dạy Của Cô</h2>
+            <p class="text-xs text-brand-brownLight">Theo dõi các buổi dạy trong tuần theo khung giờ và địa điểm</p>
+          </div>
+          <button onclick="openModal('addScheduleModal')" class="px-4 py-2 rounded-xl bg-brand-accent text-white font-bold text-xs flex items-center gap-1.5">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span>Thêm Buổi Dạy</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="teacherScheduleGrid">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Tab Content: Parent Leads (CRM) -->
+      <div id="teacherTab-leads" class="hidden space-y-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-display font-bold text-xl text-brand-brownDark">Phụ Huynh Đăng Ký Tư Vấn & Xếp Lớp</h2>
+            <p class="text-xs text-brand-brownLight">Thông tin đăng ký gửi trực tiếp từ form trang chủ Landing Page</p>
+          </div>
+        </div>
+        <div id="leadsContainer" class="bg-white rounded-3xl p-6 border border-brand-pink/40 shadow-sm space-y-4">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Tab Content: Email Reminders -->
+      <div id="teacherTab-reminders" class="hidden space-y-6">
+        <div class="bg-white rounded-3xl p-6 border border-brand-pink/50 shadow-sm space-y-6">
+          <div>
+            <h2 class="font-display font-bold text-xl text-brand-brownDark flex items-center gap-2">
+              <i data-lucide="mail-check" class="w-6 h-6 text-brand-accent"></i>
+              Hệ Thống Gửi Email Thông Báo & Nhắc Giờ Học
+            </h2>
+            <p class="text-xs sm:text-sm text-brand-brownLight mt-1">
+              Tự động gửi email thông báo tới học sinh vào đúng <strong>ngày có lịch học</strong> (07:30 sáng hàng ngày). Cô cũng có thể gửi ngay 1-click hoặc gửi riêng cho từng lớp.
+            </p>
+          </div>
+
+          <!-- TODAY'S SCHEDULE & 1-CLICK REMINDER SECTION -->
+          <div class="p-6 rounded-2xl bg-gradient-to-br from-amber-50/80 via-white to-brand-pinkSoft/40 border-2 border-brand-accent/30 space-y-4 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="space-y-1">
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-brand-accent text-white shadow-sm">
+                    <i data-lucide="bell" class="w-3.5 h-3.5 mr-1 animate-bounce"></i> Lịch Học Hôm Nay
+                  </span>
+                  <span id="todayNameAndDateBadge" class="text-xs font-semibold text-brand-brown">Đang kiểm tra lịch...</span>
+                </div>
+                <h3 class="font-display font-bold text-lg text-brand-brownDark">
+                  Thông Báo Lịch Học Tới Ngày Cho Học Sinh
+                </h3>
+                <p class="text-xs text-brand-brownLight leading-relaxed">
+                  ⏰ <strong>Tự động mỗi sáng:</strong> Hệ thống tự động quét và gửi Gmail lúc <strong>07:30 sáng</strong> cho tất cả học sinh có lịch học trong ngày hôm nay.<br>
+                  ⚡ <strong>Gửi tức thì:</strong> Cô có thể bấm nút bên phải để gửi thông báo ngay bây giờ cho toàn bộ các lớp có lịch học hôm nay.
+                </p>
+              </div>
+              <div class="shrink-0">
+                <button onclick="sendTodayClassReminders()" id="btnSendTodayReminders" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-gradient-to-r from-brand-accent to-brand-pinkDark text-white font-bold text-xs sm:text-sm hover:shadow-lg transition-all flex items-center justify-center gap-2">
+                  <i data-lucide="send" class="w-4 h-4"></i>
+                  <span>Gửi Mail Nhắc Lịch Học Hôm Nay</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- List of Today's Classes -->
+            <div id="todayClassesContainer" class="pt-2">
+              <div class="text-xs text-gray-500 py-3 text-center">Đang kiểm tra lịch học hôm nay...</div>
+            </div>
+          </div>
+
+          <!-- Quick Send Form -->
+          <div class="p-5 rounded-2xl bg-brand-cream/80 border border-brand-pink/40 space-y-4">
+            <h3 class="font-bold text-sm text-brand-brownDark">Gửi Email Nhắc Nhở Ngay Tới Một Lớp</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-brand-brownDark mb-1">Chọn lớp học</label>
+                <select id="reminderClassSelect" class="w-full px-3 py-2.5 rounded-xl bg-white border border-brand-pink/50 text-xs"></select>
+              </div>
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-semibold text-brand-brownDark mb-1">Lời nhắn kèm theo</label>
+                <input type="text" id="reminderMessage" placeholder="Ví dụ: Các em nhớ mang đủ compa và thước đo góc nhé!" class="w-full px-3 py-2.5 rounded-xl bg-white border border-brand-pink/50 text-xs">
+              </div>
+            </div>
+            <button onclick="sendManualReminder()" class="px-5 py-2.5 rounded-xl bg-brand-accent text-white font-bold text-xs hover:bg-brand-pinkDark transition-all flex items-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i>
+              <span>Gửi Mail Nhắc Nhở Cho Học Sinh Trong Lớp Này</span>
+            </button>
+          </div>
+
+          <!-- SMTP Settings Section -->
+          <div class="p-5 rounded-2xl bg-brand-sageSoft/70 border border-brand-sage space-y-3">
+            <h3 class="font-bold text-sm text-brand-brownDark flex items-center gap-2">
+              <i data-lucide="settings" class="w-4 h-4 text-brand-sageDark"></i>
+              Cấu hình tài khoản Gmail gửi mail thật
+            </h3>
+            <p class="text-xs text-brand-brownLight">
+              Mặc định hệ thống lưu log mô phỏng. Khi bạn muốn gửi mail thật vào hòm thư Gmail của học sinh/phụ huynh, chỉ cần nhập Gmail và Mật khẩu ứng dụng 16 ký tự của Google:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-brand-brownDark mb-1">Địa chỉ Gmail của cô</label>
+                <input type="email" id="smtpEmail" placeholder="Ví dụ: cotrinh.dayhoc@gmail.com" class="w-full px-3 py-2 rounded-xl bg-white border border-brand-sage text-xs">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-brand-brownDark mb-1">Mật khẩu ứng dụng Gmail (16 ký tự)</label>
+                <input type="password" id="smtpPass" placeholder="xxxx xxxx xxxx xxxx" class="w-full px-3 py-2 rounded-xl bg-white border border-brand-sage text-xs">
+              </div>
+            </div>
+            <button onclick="saveSmtpConfig()" class="px-4 py-2 rounded-xl bg-brand-sage text-brand-brownDark font-bold text-xs hover:bg-brand-sageSoft transition-all">
+              Lưu Cấu Hình Gmail
+            </button>
+          </div>
+
+          <!-- Email Logs Table -->
+          <div class="space-y-3">
+            <h3 class="font-bold text-sm text-brand-brownDark">Nhật Ký Gửi Email Gần Đây</h3>
+            <div class="overflow-x-auto rounded-xl border border-brand-pink/30">
+              <table class="w-full text-left text-xs">
+                <thead class="bg-brand-cream font-bold text-brand-brownDark border-b border-brand-pink/30">
+                  <tr>
+                    <th class="p-3">Thời gian</th>
+                    <th class="p-3">Người nhận</th>
+                    <th class="p-3">Tiêu đề</th>
+                    <th class="p-3">Trạng thái</th>
+                  </tr>
+                </thead>
+                <tbody id="emailLogsBody" class="divide-y divide-brand-pink/20">
+                  <!-- Rendered by JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ==================== 3. STUDENT PORTAL ==================== -->
+    <section id="studentPortal" class="hidden space-y-6">
+      
+      <!-- Student Welcome Card -->
+      <div class="bg-gradient-to-r from-brand-pinkSoft via-brand-sageSoft to-brand-cream rounded-3xl p-6 sm:p-8 border border-brand-pink/40 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+          <span class="text-xs font-bold text-brand-accent uppercase tracking-wider">Cổng Học Sinh</span>
+          <h2 class="font-display font-bold text-2xl text-brand-brownDark">
+            Chào mừng em, <span id="studentWelcomeName" class="text-brand-accent">Học sinh</span>! 👋
+          </h2>
+          <p class="text-xs sm:text-sm text-brand-brownLight">
+            Hãy kiểm tra các bài tập về nhà và thời khóa biểu buổi học tiếp theo cùng cô Trinh nhé.
+          </p>
+        </div>
+      </div>
+
+      <!-- Student Navigation Tabs -->
+      <div class="flex gap-2 border-b border-brand-pink/30 pb-2">
+        <button onclick="switchStudentTab('assignments')" id="stTabBtn-assignments" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-brand-accent text-white flex items-center gap-2">
+          <i data-lucide="edit-3" class="w-4 h-4"></i>
+          <span>Bài Tập Về Nhà</span>
+        </button>
+        <button onclick="switchStudentTab('schedules')" id="stTabBtn-schedules" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-brand-brown hover:bg-brand-pinkSoft flex items-center gap-2">
+          <i data-lucide="clock" class="w-4 h-4"></i>
+          <span>Thời Khóa Biểu Của Em</span>
+        </button>
+        <button onclick="switchStudentTab('classes')" id="stTabBtn-classes" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-white text-brand-brown hover:bg-brand-pinkSoft flex items-center gap-2">
+          <i data-lucide="book" class="w-4 h-4"></i>
+          <span>Lớp Học Đang Tham Gia</span>
+        </button>
+      </div>
+
+      <!-- Student Tab: Assignments -->
+      <div id="stTab-assignments" class="space-y-4">
+        <div id="studentAssignmentsList" class="space-y-4">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Student Tab: Schedules -->
+      <div id="stTab-schedules" class="hidden space-y-4">
+        <div id="studentScheduleList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Student Tab: Classes -->
+      <div id="stTab-classes" class="hidden space-y-4">
+        <div id="studentClassesList" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ==================== TOAST CONTAINER ==================== -->
+  <div id="toastContainer"></div>
+
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal: Create Class -->
+  <div id="createClassModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">
+      <button onclick="closeModal('createClassModal')" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h3 class="font-display font-bold text-xl text-brand-brownDark">Tạo Lớp Học Mới</h3>
+      <form onsubmit="handleCreateClass(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Tên lớp học *</label>
+          <input type="text" id="newClassName" required placeholder="Ví dụ: Toán 8 - Kèm Nhóm Nâng Cao" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-brand-brownDark mb-1">Môn học *</label>
+            <select id="newClassSubject" class="w-full px-3 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+              <option value="Toán">Toán</option>
+              <option value="Khoa học tự nhiên">Khoa học tự nhiên</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-brand-brownDark mb-1">Khối lớp *</label>
+            <select id="newClassGrade" class="w-full px-3 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+              <option value="Lớp 6">Lớp 6</option>
+              <option value="Lớp 7">Lớp 7</option>
+              <option value="Lớp 8">Lớp 8</option>
+              <option value="Lớp 9">Lớp 9</option>
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Màu nhận diện lớp</label>
+          <div class="flex gap-3">
+            <label class="flex items-center gap-1.5 text-xs"><input type="radio" name="classColor" value="#E7786B" checked> <span class="w-4 h-4 rounded-full bg-[#E7786B] inline-block"></span> Hồng đào</label>
+            <label class="flex items-center gap-1.5 text-xs"><input type="radio" name="classColor" value="#5E9385"> <span class="w-4 h-4 rounded-full bg-[#5E9385] inline-block"></span> Xanh sage</label>
+            <label class="flex items-center gap-1.5 text-xs"><input type="radio" name="classColor" value="#3B82F6"> <span class="w-4 h-4 rounded-full bg-[#3B82F6] inline-block"></span> Xanh dương</label>
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Mô tả hoặc mục tiêu lớp</label>
+          <textarea id="newClassDesc" rows="2" placeholder="Ví dụ: Ôn tập lấy lại căn bản hình học và phương trình..." class="w-full px-3.5 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-brand-accent text-white font-bold text-sm shadow hover:bg-brand-pinkDark">
+          Lưu & Tạo Lớp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Student to Class -->
+  <div id="addStudentModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">
+      <button onclick="closeModal('addStudentModal')" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h3 class="font-display font-bold text-xl text-brand-brownDark">Thêm Học Sinh Vào Lớp</h3>
+      <input type="hidden" id="targetClassId">
+      <form onsubmit="handleAddStudent(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Họ và tên học sinh *</label>
+          <input type="text" id="newStName" required placeholder="Ví dụ: Nguyễn Văn Nam" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Tên đăng nhập (Username) *</label>
+          <input type="text" id="newStUsername" required placeholder="Ví dụ: nam7 hoặc hocsinh1" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Email nhận thông báo lịch học *</label>
+          <input type="email" id="newStEmail" required placeholder="Ví dụ: phuhuynh.nam@gmail.com" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Số điện thoại liên hệ</label>
+          <input type="tel" id="newStPhone" placeholder="Ví dụ: 0905 xxx xxx" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Mật khẩu cấp cho học sinh *</label>
+          <input type="text" id="newStPassword" value="123456" required class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-brand-accent text-white font-bold text-sm shadow hover:bg-brand-pinkDark">
+          Thêm Học Sinh Vào Lớp
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Show Student List of a Class -->
+  <div id="classStudentsModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-4 shadow-2xl relative max-h-[85vh] flex flex-col">
+      <button onclick="closeModal('classStudentsModal')" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div>
+        <h3 class="font-display font-bold text-xl text-brand-brownDark" id="classStudentModalTitle">Danh Sách Học Sinh</h3>
+        <p class="text-xs text-brand-brownLight">Quản lý và theo dõi học sinh trong lớp</p>
+      </div>
+      <div id="classStudentModalList" class="flex-grow overflow-y-auto space-y-2 pr-1"></div>
+    </div>
+  </div>
+
+  <!-- Modal: Create Assignment with File Upload -->
+  <div id="createAssignmentModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">
+      <button onclick="closeModal('createAssignmentModal')" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h3 class="font-display font-bold text-xl text-brand-brownDark">Giao Bài Tập Cho Lớp</h3>
+      <form onsubmit="handleCreateAssignment(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Chọn lớp nhận bài tập *</label>
+          <select id="assignClassSelect" required class="w-full px-3 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs"></select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Tiêu đề bài tập *</label>
+          <input type="text" id="assignTitle" required placeholder="Ví dụ: Phiếu bài tập số 3 - Phương trình bậc nhất" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Hạn nộp bài</label>
+          <input type="datetime-local" id="assignDueDate" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Đính kèm ảnh đề bài hoặc tài liệu bài tập (PDF, Word, ảnh)</label>
+          <div class="flex flex-col gap-1.5">
+            <input type="file" id="assignFileInput" onchange="handleAssignFileSelect()" accept="image/*,.pdf,.doc,.docx" class="text-xs file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-pinkSoft file:text-brand-accent hover:file:bg-brand-pink cursor-pointer">
+            <div id="assignFilePreview"></div>
+          </div>
+          <input type="text" id="assignUrl" placeholder="Hoặc dán Link file đề bài (Google Drive, hình ảnh online...)" class="w-full mt-2 px-3.5 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Nội dung đề bài / Lời dặn của cô</label>
+          <textarea id="assignDesc" rows="3" placeholder="Các em làm câu 1, 2, 3 và trình bày các bước..." class="w-full px-3.5 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs"></textarea>
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-brand-accent text-white font-bold text-sm shadow hover:bg-brand-pinkDark">
+          Giao Bài Tập
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: View Submissions (Teacher) -->
+  <div id="viewSubmissionsModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 space-y-4 shadow-2xl relative max-h-[90vh] flex flex-col">
+      <button onclick="closeModal('viewSubmissionsModal')" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <div>
+        <h3 class="font-display font-bold text-xl text-brand-brownDark" id="subModalTitle">Danh Sách Học Sinh Nộp Bài</h3>
+        <p class="text-xs text-brand-brownLight">Xem bài làm và nhập điểm số, nhận xét cho học sinh</p>
+      </div>
+      <div id="submissionsListContainer" class="flex-grow overflow-y-auto space-y-3 pr-1"></div>
+    </div>
+  </div>
+
+  <!-- Modal: Submit Assignment (Student) -->
+  <div id="studentSubmitModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">
+      <button onclick="closeModal('studentSubmitModal')" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h3 class="font-display font-bold text-xl text-brand-brownDark">Nộp Bài Tập Cho Cô</h3>
+      <input type="hidden" id="submitAssignmentId">
+      <form onsubmit="handleStudentSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Nội dung bài làm hoặc câu trả lời</label>
+          <textarea id="subContent" rows="4" placeholder="Nhập đáp án hoặc câu trả lời bài tập của em tại đây..." class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Chụp ảnh vở bài làm / tải file đính kèm</label>
+          <div class="flex flex-col gap-1.5">
+            <input type="file" id="studentFileInput" onchange="handleStudentFileSelect()" accept="image/*,.pdf,.doc,.docx" class="text-xs file:mr-2 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-pinkSoft file:text-brand-accent hover:file:bg-brand-pink cursor-pointer">
+            <div id="studentFilePreview"></div>
+          </div>
+          <input type="text" id="subUrl" placeholder="Hoặc dán Link file: https://..." class="w-full mt-2 px-3.5 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-brand-accent text-white font-bold text-sm shadow hover:bg-brand-pinkDark">
+          Xác Nhận Nộp Bài
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Add Schedule (Teacher) -->
+  <div id="addScheduleModal" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl relative">
+      <button onclick="closeModal('addScheduleModal')" class="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 rounded-full">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+      <h3 class="font-display font-bold text-xl text-brand-brownDark">Thêm Buổi Dạy Vào Lịch</h3>
+      <form onsubmit="handleAddSchedule(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Chọn lớp học *</label>
+          <select id="schClassSelect" required class="w-full px-3 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs"></select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Thứ trong tuần *</label>
+          <select id="schDay" class="w-full px-3 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+            <option value="Thứ 2">Thứ 2</option>
+            <option value="Thứ 3">Thứ 3</option>
+            <option value="Thứ 4">Thứ 4</option>
+            <option value="Thứ 5">Thứ 5</option>
+            <option value="Thứ 6">Thứ 6</option>
+            <option value="Thứ 7">Thứ 7</option>
+            <option value="Chủ Nhật">Chủ Nhật</option>
+          </select>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-brand-brownDark mb-1">Giờ bắt đầu *</label>
+            <input type="time" id="schStartTime" required value="18:00" class="w-full px-3 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-brand-brownDark mb-1">Giờ kết thúc *</label>
+            <input type="time" id="schEndTime" required value="19:30" class="w-full px-3 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-brand-brownDark mb-1">Địa điểm học</label>
+          <input type="text" id="schLocation" value="Tại nhà cô (Hòa Tiến)" class="w-full px-3.5 py-2.5 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs">
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-brand-accent text-white font-bold text-sm shadow hover:bg-brand-pinkDark">
+          Lưu Buổi Dạy
+        </button>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    // State management
+    let currentUser = null;
+    let token = localStorage.getItem('token');
+    let classesCache = [];
+
+    // Toast helper
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      const isSuccess = type === 'success';
+      toast.className = `toast-item px-4 py-3 rounded-2xl shadow-lg border flex items-center gap-2.5 text-xs font-bold ${
+        isSuccess ? 'bg-emerald-50 border-emerald-300 text-emerald-900' : 'bg-red-50 border-red-300 text-red-900'
+      }`;
+      toast.innerHTML = `
+        <span class="${isSuccess ? 'text-emerald-600' : 'text-red-600'}">${isSuccess ? '✓' : '⚠'}</span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.4s ease';
+        setTimeout(() => toast.remove(), 400);
+      }, 3500);
+    }
+
+    // Auto-detect API Base (supports http://localhost:3000, file://, and Live Server)
+    const API_BASE = (window.location.protocol === 'file:' || !window.location.origin.includes(':3000')) ? 'http://localhost:3000' : '';
+
+    // Init App
+    document.addEventListener('DOMContentLoaded', async () => {
+      lucide.createIcons();
+      if (token) {
+        await fetchCurrentUser();
+      } else {
+        renderLoggedOut();
+      }
+    });
+
+    function getAuthHeaders() {
+      return {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      };
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    // Login handlers
+    function togglePasswordVisibility() {
+      const pwdInput = document.getElementById('password');
+      const icon = document.getElementById('togglePasswordIcon');
+      if (pwdInput.type === 'password') {
+        pwdInput.type = 'text';
+        icon.setAttribute('data-lucide', 'eye-off');
+      } else {
+        pwdInput.type = 'password';
+        icon.setAttribute('data-lucide', 'eye');
+      }
+      lucide.createIcons();
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorDiv = document.getElementById('loginError');
+      errorDiv.classList.add('hidden');
+
+      try {
+        const res = await fetch(API_BASE + '/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          errorDiv.innerText = data.error || 'Đăng nhập thất bại';
+          errorDiv.classList.remove('hidden');
+          return;
+        }
+
+        token = data.token;
+        localStorage.setItem('token', token);
+        currentUser = data.user;
+        showToast(`Chào mừng ${currentUser.full_name} đã đăng nhập!`);
+        renderLoggedIn();
+      } catch (err) {
+        errorDiv.innerHTML = '<strong>Lỗi kết nối máy chủ:</strong> ' + err.message + '<div class="text-[11px] font-normal text-amber-900 mt-2 p-2 rounded-lg bg-amber-50 border border-amber-200">💡 Vui lòng đảm bảo máy chủ Node.js đang chạy và mở tại địa chỉ:<br><a href="http://localhost:3000/classroom.html" class="underline font-bold text-brand-accent">http://localhost:3000/classroom.html</a></div>';
+        errorDiv.classList.remove('hidden');
+      }
+    }
+
+    async function fetchCurrentUser() {
+      try {
+        const res = await fetch(API_BASE + '/api/auth/me', { headers: getAuthHeaders() });
+        if (!res.ok) {
+          logout();
+          return;
+        }
+        const data = await res.json();
+        currentUser = data.user;
+        renderLoggedIn();
+      } catch (e) {
+        logout();
+      }
+    }
+
+    function logout() {
+      token = null;
+      currentUser = null;
+      localStorage.removeItem('token');
+      renderLoggedOut();
+      showToast('Đã đăng xuất khỏi tài khoản');
+    }
+
+    // Render Views
+    function renderLoggedOut() {
+      document.getElementById('loginSection').classList.remove('hidden');
+      document.getElementById('teacherPortal').classList.add('hidden');
+      document.getElementById('studentPortal').classList.add('hidden');
+
+      document.getElementById('userHeaderArea').innerHTML = `
+        <span class="text-xs font-semibold text-brand-brownLight">Chưa đăng nhập</span>
+      `;
+      lucide.createIcons();
+    }
+
+    function renderLoggedIn() {
+      document.getElementById('loginSection').classList.add('hidden');
+
+      const roleBadge = currentUser.role === 'teacher' 
+        ? `<span class="bg-brand-pink text-brand-brownDark font-bold px-2.5 py-0.5 rounded-full text-[11px]">Giáo viên</span>`
+        : `<span class="bg-brand-sage text-brand-brownDark font-bold px-2.5 py-0.5 rounded-full text-[11px]">Học sinh</span>`;
+
+      document.getElementById('userHeaderArea').innerHTML = `
+        <div class="flex items-center gap-3">
+          <div class="text-right">
+            <div class="font-bold text-xs sm:text-sm text-brand-brownDark">${currentUser.full_name}</div>
+            <div class="flex items-center gap-1 justify-end">${roleBadge}</div>
+          </div>
+          <button onclick="logout()" class="p-2 text-brand-brownLight hover:text-red-600 rounded-xl hover:bg-red-50 transition-colors" title="Đăng xuất">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+          </button>
+        </div>
+      `;
+
+      if (currentUser.role === 'teacher') {
+        document.getElementById('teacherPortal').classList.remove('hidden');
+        document.getElementById('studentPortal').classList.add('hidden');
+        loadTeacherData();
+      } else {
+        document.getElementById('studentPortal').classList.remove('hidden');
+        document.getElementById('teacherPortal').classList.add('hidden');
+        document.getElementById('studentWelcomeName').innerText = currentUser.full_name;
+        loadStudentData();
+      }
+
+      lucide.createIcons();
+    }
+
+    // ==================== TEACHER FUNCTIONS ====================
+    function switchTeacherTab(tab) {
+      ['classes', 'assignments', 'schedules', 'leads', 'reminders'].forEach(t => {
+        document.getElementById(`teacherTab-${t}`).classList.add('hidden');
+        const btn = document.getElementById(`tabBtn-${t}`);
+        if (btn) {
+          btn.classList.remove('bg-brand-accent', 'text-white');
+          btn.classList.add('bg-brand-cream', 'text-brand-brown');
+        }
+      });
+      document.getElementById(`teacherTab-${tab}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tabBtn-${tab}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-brand-cream', 'text-brand-brown');
+        activeBtn.classList.add('bg-brand-accent', 'text-white');
+      }
+
+      if (tab === 'schedules') loadTeacherSchedules();
+      if (tab === 'leads') loadTeacherLeads();
+      if (tab === 'reminders') {
+        loadTodayClassesReminder();
+        loadEmailLogs();
+      }
+      lucide.createIcons();
+    }
+
+    async function loadTeacherData() {
+      await loadTeacherStats();
+      await loadTeacherClasses();
+      await loadTeacherAssignments();
+      await loadTeacherSchedules();
+      await loadTeacherLeads();
+      await loadTodayClassesReminder();
+    }
+
+    async function loadTeacherStats() {
+      try {
+        const res = await fetch(API_BASE + '/api/teacher/stats', { headers: getAuthHeaders() });
+        const data = await res.json();
+        document.getElementById('statClasses').innerText = data.totalClasses || 0;
+        document.getElementById('statStudents').innerText = data.totalStudents || 0;
+        document.getElementById('statAssignments').innerText = data.totalAssignments || 0;
+        document.getElementById('statLeads').innerText = data.newLeads || 0;
+
+        const badge = document.getElementById('leadBadgeCount');
+        if (data.newLeads > 0) {
+          badge.innerText = data.newLeads;
+          badge.classList.remove('hidden');
+        } else {
+          badge.classList.add('hidden');
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadTeacherClasses() {
+      try {
+        const res = await fetch(API_BASE + '/api/classes', { headers: getAuthHeaders() });
+        const data = await res.json();
+        classesCache = data.classes || [];
+
+        const selects = ['assignClassSelect', 'reminderClassSelect', 'schClassSelect'];
+        selects.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.innerHTML = classesCache.map(c => `<option value="${c.id}">${c.name} (${c.grade})</option>`).join('');
+          }
+        });
+
+        const listEl = document.getElementById('classesList');
+        if (classesCache.length === 0) {
+          listEl.innerHTML = `<div class="col-span-full p-8 text-center bg-white rounded-3xl border border-brand-pink/40 text-xs text-brand-brownLight">Chưa có lớp nào. Hãy bấm "Tạo Lớp" ở góc trên!</div>`;
+          return;
+        }
+
+        listEl.innerHTML = classesCache.map(c => `
+          <div class="bg-white rounded-3xl p-6 border-2 border-brand-pink/50 shadow-sm space-y-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="px-3 py-1 rounded-full text-[11px] font-bold" style="background-color: ${c.color}20; color: ${c.color}">${c.grade} - ${c.subject}</span>
+                <span class="text-xs text-brand-brownLight font-medium">${c.student_count || 0} học sinh • ${c.assignment_count || 0} bài tập</span>
+              </div>
+              <h3 class="font-display font-bold text-lg text-brand-brownDark">${c.name}</h3>
+              <p class="text-xs text-brand-brownLight line-clamp-2">${c.description || 'Chưa có mô tả'}</p>
+            </div>
+
+            <div class="pt-4 border-t border-brand-pink/20 space-y-2.5">
+              <button onclick="filterTeacherAssignmentsByClass(${c.id})" class="w-full py-2 px-3 rounded-xl bg-brand-pinkSoft hover:bg-brand-pink text-brand-brownDark font-bold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                <i data-lucide="file-text" class="w-3.5 h-3.5 text-brand-accent"></i>
+                <span>Xem ${c.assignment_count || 0} bài tập của lớp này</span>
+              </button>
+              <div class="flex items-center justify-between pt-1">
+                <button onclick="openAddStudentModal(${c.id})" class="text-xs font-bold text-brand-accent hover:underline flex items-center gap-1">
+                  <i data-lucide="user-plus" class="w-3.5 h-3.5"></i> Thêm học sinh
+                </button>
+                <button onclick="loadAndShowStudents(${c.id}, '${c.name.replace(/'/g, "\\'")}')" class="text-xs font-bold text-brand-brownDark hover:underline flex items-center gap-1">
+                  <i data-lucide="users" class="w-3.5 h-3.5"></i> DS học sinh (${c.student_count})
+                </button>
+              </div>
+              <div class="flex justify-end pt-1 border-t border-brand-pink/10">
+                <button onclick="deleteClass(${c.id}, '${c.name.replace(/'/g, "\\'")}')" class="text-[11px] text-red-500 hover:text-red-700 flex items-center gap-1">
+                  <i data-lucide="trash-2" class="w-3 h-3"></i> Xóa lớp
+                </button>
+              </div>
+            </div>
+          </div>
+        `).join('');
+
+        lucide.createIcons();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function handleCreateClass(e) {
+      e.preventDefault();
+      const name = document.getElementById('newClassName').value.trim();
+      const subject = document.getElementById('newClassSubject').value;
+      const grade = document.getElementById('newClassGrade').value;
+      const color = document.querySelector('input[name="classColor"]:checked').value;
+      const description = document.getElementById('newClassDesc').value.trim();
+
+      const res = await fetch(API_BASE + '/api/classes', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ name, subject, grade, color, description })
+      });
+      if (res.ok) {
+        closeModal('createClassModal');
+        document.getElementById('newClassName').value = '';
+        document.getElementById('newClassDesc').value = '';
+        await loadTeacherClasses();
+        await loadTeacherStats();
+        showToast('Đã tạo lớp học mới thành công!');
+      }
+    }
+
+    async function deleteClass(classId, className) {
+      if (!confirm(`Bạn có chắc chắn muốn xóa lớp "${className}" không? Các bài tập và thời khóa biểu của lớp này sẽ bị xóa.`)) return;
+      const res = await fetch(`${API_BASE}/api/classes/${classId}`, { method: 'DELETE', headers: getAuthHeaders() });
+      if (res.ok) {
+        await loadTeacherClasses();
+        await loadTeacherStats();
+        showToast('Đã xóa lớp học');
+      }
+    }
+
+    function openAddStudentModal(classId) {
+      document.getElementById('targetClassId').value = classId;
+      openModal('addStudentModal');
+    }
+
+    async function handleAddStudent(e) {
+      e.preventDefault();
+      const classId = document.getElementById('targetClassId').value;
+      const full_name = document.getElementById('newStName').value.trim();
+      const username = document.getElementById('newStUsername').value.trim();
+      const email = document.getElementById('newStEmail').value.trim();
+      const phone = document.getElementById('newStPhone').value.trim();
+      const password = document.getElementById('newStPassword').value.trim();
+
+      const res = await fetch(`${API_BASE}/api/classes/${classId}/students`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ full_name, username, email, phone, password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        closeModal('addStudentModal');
+        showToast(`Đã thêm học sinh ${full_name} vào lớp!`);
+        await loadTeacherClasses();
+        await loadTeacherStats();
+      } else {
+        alert(data.error || 'Lỗi khi thêm học sinh');
+      }
+    }
+
+    async function loadAndShowStudents(classId, className) {
+      document.getElementById('classStudentModalTitle').innerText = `Học Sinh: ${className}`;
+      const container = document.getElementById('classStudentModalList');
+      container.innerHTML = `<p class="text-xs text-gray-500">Đang tải...</p>`;
+      openModal('classStudentsModal');
+
+      const res = await fetch(`${API_BASE}/api/classes/${classId}/students`, { headers: getAuthHeaders() });
+      const data = await res.json();
+      const students = data.students || [];
+
+      if (students.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center text-xs text-brand-brownLight">Lớp này chưa có học sinh nào. Bấm "Thêm học sinh" để xếp lớp!</div>`;
+        return;
+      }
+
+      container.innerHTML = students.map(st => `
+        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-brand-cream border border-brand-pink/40 text-xs">
+          <div>
+            <p class="font-bold text-brand-brownDark">${st.full_name} <span class="text-brand-accent">(@${st.username})</span></p>
+            <p class="text-[11px] text-brand-brownLight">Email: ${st.email} | SĐT: ${st.phone || 'Chưa cập nhật'}</p>
+          </div>
+          <button onclick="removeStudentFromClass(${classId}, ${st.id})" class="p-1.5 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors" title="Xóa khỏi lớp">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    async function removeStudentFromClass(classId, studentId) {
+      if (!confirm('Bạn có chắc muốn xóa học sinh này khỏi lớp?')) return;
+      const res = await fetch(`${API_BASE}/api/classes/${classId}/students/${studentId}`, { method: 'DELETE', headers: getAuthHeaders() });
+      if (res.ok) {
+        showToast('Đã xóa học sinh khỏi lớp');
+        closeModal('classStudentsModal');
+        await loadTeacherClasses();
+        await loadTeacherStats();
+      }
+    }
+
+    // ==================== ATTACHMENT & FILE UPLOAD HELPERS ====================
+    function renderAttachmentHTML(url) {
+      if (!url) return '';
+      const isImage = /\.(jpg|jpeg|png|webp|gif|svg)$/i.test(url) || url.includes('/uploads/');
+      if (isImage) {
+        return `
+          <div class="mt-3">
+            <a href="${url}" target="_blank" class="block max-w-sm rounded-2xl overflow-hidden border-2 border-brand-pink/50 bg-brand-cream shadow-sm hover:shadow-md transition-all group relative">
+              <img src="${url}" alt="Ảnh bài tập" class="w-full max-h-60 object-contain rounded-xl bg-white group-hover:scale-102 transition-transform" />
+              <div class="absolute bottom-2 right-2 px-2.5 py-1 rounded-lg bg-black/70 backdrop-blur-sm text-white text-[10px] font-bold flex items-center gap-1">
+                <i data-lucide="zoom-in" class="w-3 h-3"></i> Xem ảnh gốc
+              </div>
+            </a>
+          </div>
+        `;
+      }
+      return `
+        <div class="mt-2.5">
+          <a href="${url}" target="_blank" class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-blue-50 text-blue-700 border border-blue-200 text-xs font-bold hover:bg-blue-100 transition-colors">
+            <i data-lucide="file-text" class="w-4 h-4"></i>
+            <span>Xem tài liệu / Đề bài đính kèm</span>
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </a>
+        </div>
+      `;
+    }
+
+    async function uploadFileHelper(file) {
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch(API_BASE + '/api/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Lỗi khi tải file');
+      return data.fileUrl;
+    }
+
+    async function handleAssignFileSelect() {
+      const input = document.getElementById('assignFileInput');
+      const preview = document.getElementById('assignFilePreview');
+      if (!input.files || input.files.length === 0) {
+        preview.innerHTML = '';
+        return;
+      }
+      const file = input.files[0];
+      preview.innerHTML = `
+        <div class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-pinkSoft text-xs text-brand-brown">
+          <span class="animate-spin">⏳</span>
+          <span>Đang tải ảnh đề bài lên hệ thống...</span>
+        </div>
+      `;
+      try {
+        const fileUrl = await uploadFileHelper(file);
+        document.getElementById('assignUrl').value = fileUrl;
+        const isImg = file.type.startsWith('image/');
+        preview.innerHTML = `
+          <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 flex items-center gap-3">
+            ${isImg ? `<img src="${fileUrl}" class="w-14 h-14 object-cover rounded-lg border border-emerald-200" />` : '<div class="w-10 h-10 rounded-lg bg-emerald-200 flex items-center justify-center font-bold">📄</div>'}
+            <div class="text-xs">
+              <p class="font-bold text-emerald-900">✓ Đã tải ảnh lên thành công!</p>
+              <p class="text-[11px] text-emerald-700">${file.name} (${Math.round(file.size / 1024)} KB)</p>
+            </div>
+          </div>
+        `;
+        showToast('Tải ảnh bài tập lên thành công!');
+      } catch (err) {
+        preview.innerHTML = `<p class="text-xs text-red-600 mt-1">Lỗi tải ảnh: ${err.message}</p>`;
+      }
+    }
+
+    // ==================== ASSIGNMENTS (TEACHER) ====================
+    let teacherAssignmentsCache = [];
+
+    async function loadTeacherAssignments() {
+      try {
+        const res = await fetch(API_BASE + '/api/assignments', { headers: getAuthHeaders() });
+        const data = await res.json();
+        teacherAssignmentsCache = data.assignments || [];
+
+        // Update badge
+        const badge = document.getElementById('assignCountBadge');
+        if (badge) badge.innerText = `${teacherAssignmentsCache.length} bài`;
+
+        // Update filter dropdown
+        const filterSelect = document.getElementById('assignmentFilterSelect');
+        if (filterSelect) {
+          const currentVal = filterSelect.value || 'all';
+          filterSelect.innerHTML = `<option value="all">Tất cả các lớp (${teacherAssignmentsCache.length} bài)</option>` +
+            classesCache.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+          filterSelect.value = currentVal;
+        }
+
+        renderTeacherAssignmentsList(teacherAssignmentsCache);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function filterTeacherAssignments(classId) {
+      if (classId === 'all') {
+        renderTeacherAssignmentsList(teacherAssignmentsCache);
+      } else {
+        const filtered = teacherAssignmentsCache.filter(a => a.class_id == classId);
+        renderTeacherAssignmentsList(filtered);
+      }
+    }
+
+    function filterTeacherAssignmentsByClass(classId) {
+      switchTeacherTab('assignments');
+      const filterSelect = document.getElementById('assignmentFilterSelect');
+      if (filterSelect) {
+        filterSelect.value = classId;
+      }
+      filterTeacherAssignments(classId);
+    }
+
+    function renderTeacherAssignmentsList(assignments) {
+      const listEl = document.getElementById('teacherAssignmentsList');
+      if (!listEl) return;
+
+      if (assignments.length === 0) {
+        listEl.innerHTML = `<div class="p-8 text-center bg-white rounded-3xl border border-brand-pink/40 text-xs text-brand-brownLight">Chưa có bài tập nào. Hãy bấm "Giao Bài Mới"!</div>`;
+        return;
+      }
+
+      listEl.innerHTML = assignments.map(a => `
+        <div class="bg-white rounded-2xl p-5 border border-brand-pink/40 shadow-sm flex flex-col md:flex-row md:items-start justify-between gap-4">
+          <div class="space-y-1.5 max-w-xl flex-grow">
+            <div class="flex items-center gap-2">
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold" style="background: ${a.class_color}20; color: ${a.class_color}">${a.class_name}</span>
+              <span class="text-xs text-brand-brownLight">Hạn nộp: ${a.due_date ? new Date(a.due_date).toLocaleString('vi-VN') : 'Không giới hạn'}</span>
+            </div>
+            <h3 class="font-bold text-base text-brand-brownDark">${a.title}</h3>
+            <p class="text-xs text-brand-brownLight">${a.description || ''}</p>
+            ${renderAttachmentHTML(a.attachment_url)}
+          </div>
+
+          <div class="flex items-center gap-3 shrink-0">
+            <div class="text-right">
+              <span class="block text-xs font-bold text-brand-accent">${a.submission_count} / ${a.total_students} đã nộp</span>
+            </div>
+            <button onclick="viewSubmissions(${a.id}, '${a.title.replace(/'/g, "\\'")}')" class="px-4 py-2 rounded-xl bg-brand-pinkSoft border border-brand-pink text-brand-brownDark font-bold text-xs hover:bg-brand-pink flex items-center gap-1.5">
+              <i data-lucide="check-square" class="w-4 h-4"></i>
+              <span>Xem bài nộp</span>
+            </button>
+            <button onclick="deleteAssignment(${a.id})" class="p-2 text-gray-400 hover:text-red-500 rounded-lg" title="Xóa bài tập">
+              <i data-lucide="trash-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      lucide.createIcons();
+    }
+
+    async function handleCreateAssignment(e) {
+      e.preventDefault();
+      const class_id = document.getElementById('assignClassSelect').value;
+      const title = document.getElementById('assignTitle').value.trim();
+      const due_date = document.getElementById('assignDueDate').value;
+      let attachment_url = document.getElementById('assignUrl').value.trim();
+      const description = document.getElementById('assignDesc').value.trim();
+      const fileInput = document.getElementById('assignFileInput');
+
+      // Auto-upload if user selected file and clicked submit directly
+      if (!attachment_url && fileInput.files && fileInput.files.length > 0) {
+        try {
+          showToast('Đang tải ảnh đề bài lên...');
+          attachment_url = await uploadFileHelper(fileInput.files[0]);
+        } catch (err) {
+          alert('Lỗi tải ảnh: ' + err.message);
+          return;
+        }
+      }
+
+      const res = await fetch(API_BASE + '/api/assignments', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ class_id, title, due_date, attachment_url, description })
+      });
+      if (res.ok) {
+        closeModal('createAssignmentModal');
+        document.getElementById('assignTitle').value = '';
+        document.getElementById('assignDesc').value = '';
+        document.getElementById('assignUrl').value = '';
+        fileInput.value = '';
+        document.getElementById('assignFilePreview').innerHTML = '';
+        await loadTeacherAssignments();
+        await loadTeacherStats();
+        showToast('Đã giao bài tập thành công cho lớp!');
+      }
+    }
+
+    async function deleteAssignment(assignId) {
+      if (!confirm('Bạn có chắc muốn xóa bài tập này?')) return;
+      const res = await fetch(`${API_BASE}/api/assignments/${assignId}`, { method: 'DELETE', headers: getAuthHeaders() });
+      if (res.ok) {
+        showToast('Đã xóa bài tập');
+        await loadTeacherAssignments();
+        await loadTeacherStats();
+      }
+    }
+
+    async function viewSubmissions(assignmentId, title) {
+      document.getElementById('subModalTitle').innerText = `Bài Nộp: ${title}`;
+      const container = document.getElementById('submissionsListContainer');
+      container.innerHTML = `<p class="text-xs text-gray-500">Đang tải danh sách...</p>`;
+      openModal('viewSubmissionsModal');
+
+      const res = await fetch(`${API_BASE}/api/assignments/${assignmentId}/submissions`, { headers: getAuthHeaders() });
+      const data = await res.json();
+      const subs = data.submissions || [];
+
+      if (subs.length === 0) {
+        container.innerHTML = `<div class="p-6 text-center text-xs text-gray-500">Chưa có học sinh nào nộp bài tập này.</div>`;
+        return;
+      }
+
+      container.innerHTML = subs.map(s => `
+        <div class="p-4 rounded-2xl bg-brand-cream border border-brand-pink/40 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="font-bold text-xs sm:text-sm text-brand-brownDark">${s.student_name} (${s.student_email || ''})</p>
+              <p class="text-[10px] text-brand-brownLight">Nộp lúc: ${new Date(s.submitted_at).toLocaleString('vi-VN')}</p>
+            </div>
+            <div class="text-right">
+              ${s.score !== null ? `<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs">${s.score} điểm</span>` : `<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-semibold">Chưa chấm</span>`}
+            </div>
+          </div>
+
+          <div class="p-3.5 rounded-xl bg-white text-xs text-brand-brown leading-relaxed">
+            <p class="font-medium">${s.content || 'Không có ghi chú'}</p>
+            ${renderAttachmentHTML(s.attachment_url)}
+          </div>
+
+          <!-- Grade Form -->
+          <div class="flex items-center gap-2 pt-1">
+            <input type="number" step="0.5" min="0" max="10" id="gradeScore-${s.id}" value="${s.score || ''}" placeholder="Điểm (0-10)" class="w-24 px-2.5 py-1.5 rounded-lg bg-white border border-brand-pink/50 text-xs">
+            <input type="text" id="gradeFeedback-${s.id}" value="${s.feedback || ''}" placeholder="Nhận xét của cô..." class="flex-grow px-2.5 py-1.5 rounded-lg bg-white border border-brand-pink/50 text-xs">
+            <button onclick="submitGrade(${s.id})" class="px-3 py-1.5 rounded-lg bg-brand-accent text-white font-bold text-xs hover:bg-brand-pinkDark">Lưu điểm</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function submitGrade(submissionId) {
+      const score = document.getElementById(`gradeScore-${submissionId}`).value;
+      const feedback = document.getElementById(`gradeFeedback-${submissionId}`).value;
+
+      const res = await fetch(`${API_BASE}/api/submissions/${submissionId}/grade`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ score, feedback })
+      });
+      if (res.ok) {
+        showToast('Đã lưu điểm và nhận xét cho học sinh!');
+      }
+    }
+
+    // ==================== SCHEDULES (TEACHER) ====================
+    async function loadTeacherSchedules() {
+      try {
+        const res = await fetch(API_BASE + '/api/schedules', { headers: getAuthHeaders() });
+        const data = await res.json();
+        const schedules = data.schedules || [];
+
+        const gridEl = document.getElementById('teacherScheduleGrid');
+        const days = ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'Chủ Nhật'];
+
+        gridEl.innerHTML = days.map(day => {
+          const dayItems = schedules.filter(s => s.day_of_week === day);
+          return `
+            <div class="bg-white rounded-2xl p-4 border border-brand-pink/40 space-y-3">
+              <div class="flex items-center justify-between pb-2 border-b border-brand-pink/20">
+                <span class="font-bold text-xs sm:text-sm text-brand-brownDark">${day}</span>
+                <span class="text-[10px] text-brand-accent font-semibold">${dayItems.length} buổi</span>
+              </div>
+              <div class="space-y-2">
+                ${dayItems.length === 0 ? `<p class="text-[11px] text-gray-400 italic">Trống lịch</p>` : dayItems.map(item => `
+                  <div class="p-2.5 rounded-xl text-xs space-y-1 relative group" style="background-color: ${item.color}15; border-left: 3px solid ${item.color}">
+                    <button onclick="deleteSchedule(${item.id})" class="absolute top-1.5 right-1.5 text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                    </button>
+                    <p class="font-bold text-brand-brownDark">${item.class_name}</p>
+                    <p class="text-[11px] text-brand-brownLight">⏰ ${item.start_time.substring(0, 5)} - ${item.end_time.substring(0, 5)}</p>
+                    <p class="text-[10px] text-brand-brownLight">📍 ${item.room_location || 'Tại nhà cô'}</p>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+        lucide.createIcons();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function handleAddSchedule(e) {
+      e.preventDefault();
+      const class_id = document.getElementById('schClassSelect').value;
+      const day_of_week = document.getElementById('schDay').value;
+      const start_time = document.getElementById('schStartTime').value;
+      const end_time = document.getElementById('schEndTime').value;
+      const room_location = document.getElementById('schLocation').value.trim();
+
+      const res = await fetch(API_BASE + '/api/schedules', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ class_id, day_of_week, start_time, end_time, room_location })
+      });
+      if (res.ok) {
+        closeModal('addScheduleModal');
+        await loadTeacherSchedules();
+        showToast('Đã thêm buổi dạy thành công!');
+      }
+    }
+
+    async function deleteSchedule(id) {
+      if (!confirm('Xóa buổi dạy này khỏi lịch?')) return;
+      const res = await fetch(`${API_BASE}/api/schedules/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+      if (res.ok) {
+        showToast('Đã xóa buổi dạy');
+        await loadTeacherSchedules();
+      }
+    }
+
+    // ==================== PARENT LEADS (TEACHER) ====================
+    async function loadTeacherLeads() {
+      try {
+        const res = await fetch(API_BASE + '/api/teacher/leads', { headers: getAuthHeaders() });
+        const data = await res.json();
+        const leads = data.leads || [];
+
+        const container = document.getElementById('leadsContainer');
+        if (leads.length === 0) {
+          container.innerHTML = `<div class="p-8 text-center text-xs text-brand-brownLight">Chưa có thông tin đăng ký nào từ phụ huynh.</div>`;
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-brand-cream text-brand-brownDark font-bold border-b border-brand-pink/30">
+                <tr>
+                  <th class="p-3">Ngày gửi</th>
+                  <th class="p-3">Họ tên Phụ huynh / Học sinh</th>
+                  <th class="p-3">Số điện thoại</th>
+                  <th class="p-3">Khối lớp</th>
+                  <th class="p-3">Hình thức</th>
+                  <th class="p-3">Lời nhắn</th>
+                  <th class="p-3">Trạng thái</th>
+                  <th class="p-3 text-right">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-brand-pink/20">
+                ${leads.map(l => `
+                  <tr class="hover:bg-brand-pinkSoft/20">
+                    <td class="p-3 text-[11px] text-brand-brownLight">${new Date(l.created_at).toLocaleDateString('vi-VN')}</td>
+                    <td class="p-3 font-bold text-brand-brownDark">${l.name}</td>
+                    <td class="p-3 font-semibold text-brand-accent">
+                      <a href="tel:${l.phone}" class="underline">${l.phone}</a>
+                    </td>
+                    <td class="p-3">${l.grade || 'Chưa rõ'}</td>
+                    <td class="p-3">${l.format || '1:1 hoặc nhóm'}</td>
+                    <td class="p-3 max-w-xs italic text-[11px]">${l.note || '-'}</td>
+                    <td class="p-3">
+                      <select onchange="updateLeadStatus(${l.id}, this.value)" class="text-[11px] font-semibold px-2 py-1 rounded-lg border bg-white ${
+                        l.status === 'new' ? 'border-amber-400 text-amber-800' : (l.status === 'contacted' ? 'border-blue-400 text-blue-800' : 'border-emerald-400 text-emerald-800')
+                      }">
+                        <option value="new" ${l.status === 'new' ? 'selected' : ''}>Chưa liên hệ</option>
+                        <option value="contacted" ${l.status === 'contacted' ? 'selected' : ''}>Đã gọi tư vấn</option>
+                        <option value="enrolled" ${l.status === 'enrolled' ? 'selected' : ''}>Đã xếp lớp</option>
+                      </select>
+                    </td>
+                    <td class="p-3 text-right">
+                      <a href="https://zalo.me/${l.phone.replace(/[^0-9]/g, '')}" target="_blank" class="px-2.5 py-1 rounded-lg bg-[#0068FF] text-white font-bold text-[10px] inline-block mr-1">Zalo</a>
+                      <button onclick="deleteLead(${l.id})" class="text-gray-400 hover:text-red-500 p-1"><i data-lucide="trash-2" class="w-3.5 h-3.5 inline"></i></button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+        lucide.createIcons();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function updateLeadStatus(id, status) {
+      const res = await fetch(`${API_BASE}/api/teacher/leads/${id}`, {
+        method: 'PATCH',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ status })
+      });
+      if (res.ok) {
+        showToast('Đã cập nhật trạng thái');
+        await loadTeacherStats();
+      }
+    }
+
+    async function deleteLead(id) {
+      if (!confirm('Xóa thông tin phụ huynh đăng ký này?')) return;
+      const res = await fetch(`${API_BASE}/api/teacher/leads/${id}`, { method: 'DELETE', headers: getAuthHeaders() });
+      if (res.ok) {
+        showToast('Đã xóa thông tin đăng ký');
+        await loadTeacherLeads();
+        await loadTeacherStats();
+      }
+    }
+
+    // ==================== REMINDERS & EMAIL LOGS ====================
+    async function loadTodayClassesReminder() {
+      try {
+        const res = await fetch(API_BASE + '/api/teacher/today-classes', { headers: getAuthHeaders() });
+        if (!res.ok) return;
+        const data = await res.json();
+        const container = document.getElementById('todayClassesContainer');
+        const badge = document.getElementById('todayNameAndDateBadge');
+        if (badge && data.todayName) {
+          badge.innerText = `${data.todayName}, ngày ${data.formattedDate}`;
+        }
+
+        if (!container) return;
+
+        if (!data.schedules || data.schedules.length === 0) {
+          container.innerHTML = `
+            <div class="p-4 rounded-xl bg-white border border-gray-200 text-center text-xs text-brand-brownLight">
+              🎉 Hôm nay (<strong>${data.todayName}</strong>) cô không có lịch dạy lớp nào. Khi đến ngày học trong tuần của lớp nào, hệ thống sẽ tự động quét và gửi mail lúc 07:30 sáng!
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            ${data.schedules.map(sch => `
+              <div class="p-4 rounded-xl bg-white border border-brand-pink/40 shadow-xs flex flex-col justify-between gap-3">
+                <div>
+                  <div class="flex items-center justify-between gap-2 mb-1.5">
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white" style="background-color: ${sch.color || '#E7786B'}">
+                      ${sch.grade || 'Lớp học'} - ${sch.subject || 'Toán/KHTN'}
+                    </span>
+                    <span class="text-xs font-bold text-brand-accent flex items-center gap-1">
+                      <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                      ${sch.start_time.substring(0, 5)} - ${sch.end_time.substring(0, 5)}
+                    </span>
+                  </div>
+                  <h4 class="font-bold text-sm text-brand-brownDark">${sch.class_name}</h4>
+                  <p class="text-[11px] text-brand-brownLight mt-0.5 flex items-center gap-1">
+                    <i data-lucide="map-pin" class="w-3 h-3 text-brand-brownLight"></i>
+                    ${sch.room_location || 'Tại nhà cô (Hòa Tiến)'}
+                  </p>
+                </div>
+
+                <div class="pt-2 border-t border-brand-pink/20">
+                  <span class="text-[11px] font-semibold text-brand-brownDark block mb-1">
+                    Học sinh nhận mail (${(sch.students || []).length} em):
+                  </span>
+                  ${(sch.students && sch.students.length > 0) ? `
+                    <div class="flex flex-wrap gap-1.5">
+                      ${sch.students.map(st => `
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-md bg-brand-pinkSoft/60 text-[11px] text-brand-brownDark">
+                          <i data-lucide="user" class="w-3 h-3 text-brand-accent"></i>
+                          <strong>${st.full_name}</strong>
+                          <span class="text-[10px] text-brand-brownLight opacity-80">(${st.email})</span>
+                        </span>
+                      `).join('')}
+                    </div>
+                  ` : `
+                    <span class="text-[11px] text-amber-600 italic">Chưa có học sinh nào trong lớp này.</span>
+                  `}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+        lucide.createIcons();
+      } catch (err) {
+        console.error('Error loading today classes:', err);
+      }
+    }
+
+    async function sendTodayClassReminders() {
+      const btn = document.getElementById('btnSendTodayReminders');
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i data-lucide="loader" class="w-4 h-4 animate-spin"></i><span>Đang gửi thông báo...</span>`;
+        lucide.createIcons();
+      }
+      try {
+        const res = await fetch(API_BASE + '/api/teacher/send-today-reminders', {
+          method: 'POST',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({})
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showToast(data.message || 'Đã gửi mail nhắc học sinh hôm nay thành công!');
+          await loadEmailLogs();
+        } else {
+          alert(data.error || 'Lỗi khi gửi email');
+        }
+      } catch (err) {
+        alert('Không thể kết nối máy chủ');
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = `<i data-lucide="send" class="w-4 h-4"></i><span>Gửi Mail Nhắc Lịch Học Hôm Nay</span>`;
+          lucide.createIcons();
+        }
+      }
+    }
+
+    async function loadEmailLogs() {
+      try {
+        const res = await fetch(API_BASE + '/api/email-logs', { headers: getAuthHeaders() });
+        const data = await res.json();
+        const logs = data.logs || [];
+
+        const tbody = document.getElementById('emailLogsBody');
+        if (logs.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" class="p-4 text-center text-gray-400">Chưa có lịch sử gửi mail nào.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = logs.map(l => `
+          <tr class="hover:bg-brand-pinkSoft/20">
+            <td class="p-3 text-[11px] text-brand-brownLight">${new Date(l.sent_at).toLocaleString('vi-VN')}</td>
+            <td class="p-3 font-semibold text-brand-brownDark">${l.recipient_email}</td>
+            <td class="p-3">${l.subject}</td>
+            <td class="p-3">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${l.status === 'sent' ? 'bg-emerald-100 text-emerald-800' : (l.status === 'simulated' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800')}">
+                ${l.status === 'sent' ? 'Đã gửi' : (l.status === 'simulated' ? 'Mô phỏng (Lưu log)' : 'Lỗi')}
+              </span>
+            </td>
+          </tr>
+        `).join('');
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function sendManualReminder() {
+      const class_id = document.getElementById('reminderClassSelect').value;
+      const custom_message = document.getElementById('reminderMessage').value.trim();
+
+      if (!class_id) {
+        alert('Vui lòng chọn lớp học');
+        return;
+      }
+
+      const res = await fetch(API_BASE + '/api/teacher/send-reminder', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ class_id, custom_message })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast(data.message || 'Đã gửi email nhắc nhở!');
+        await loadEmailLogs();
+      } else {
+        alert(data.error || 'Lỗi khi gửi email');
+      }
+    }
+
+    async function saveSmtpConfig() {
+      const email = document.getElementById('smtpEmail').value.trim();
+      const app_password = document.getElementById('smtpPass').value.trim();
+
+      const res = await fetch(API_BASE + '/api/teacher/smtp-config', {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ email, app_password })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        showToast('Đã lưu cấu hình Gmail thành công!');
+      } else {
+        alert(data.error || 'Lỗi lưu cấu hình');
+      }
+    }
+
+    // ==================== STUDENT FUNCTIONS ====================
+    function switchStudentTab(tab) {
+      ['assignments', 'schedules', 'classes'].forEach(t => {
+        document.getElementById(`stTab-${t}`).classList.add('hidden');
+        const btn = document.getElementById(`stTabBtn-${t}`);
+        btn.classList.remove('bg-brand-accent', 'text-white');
+        btn.classList.add('bg-white', 'text-brand-brown');
+      });
+      document.getElementById(`stTab-${tab}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`stTabBtn-${tab}`);
+      activeBtn.classList.remove('bg-white', 'text-brand-brown');
+      activeBtn.classList.add('bg-brand-accent', 'text-white');
+      lucide.createIcons();
+    }
+
+    async function loadStudentData() {
+      await loadStudentAssignments();
+      await loadStudentSchedules();
+      await loadStudentClasses();
+    }
+
+    async function loadStudentAssignments() {
+      const res = await fetch(API_BASE + '/api/assignments', { headers: getAuthHeaders() });
+      const data = await res.json();
+      const assignments = data.assignments || [];
+
+      const listEl = document.getElementById('studentAssignmentsList');
+      if (assignments.length === 0) {
+        listEl.innerHTML = `<div class="p-8 text-center bg-white rounded-3xl border border-brand-pink/40 text-xs text-brand-brownLight">Hiện tại chưa có bài tập nào cần làm. 🎉</div>`;
+        return;
+      }
+
+      listEl.innerHTML = assignments.map(a => {
+        const isSubmitted = a.submission_id !== null;
+        const isGraded = a.score !== null;
+
+        let statusBadge = `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Chưa nộp</span>`;
+        if (isGraded) {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">${a.score} Điểm ★</span>`;
+        } else if (isSubmitted) {
+          statusBadge = `<span class="px-2.5 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">Đã nộp bài</span>`;
+        }
+
+        return `
+          <div class="bg-white rounded-3xl p-6 border border-brand-pink/40 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold" style="background: ${a.class_color}20; color: ${a.class_color}">${a.class_name}</span>
+                <span class="text-xs text-brand-brownLight">Hạn nộp: ${a.due_date ? new Date(a.due_date).toLocaleString('vi-VN') : 'Không giới hạn'}</span>
+              </div>
+              <div>${statusBadge}</div>
+            </div>
+
+            <div class="space-y-1.5">
+              <h3 class="font-bold text-lg text-brand-brownDark">${a.title}</h3>
+              <p class="text-xs sm:text-sm text-brand-brown leading-relaxed">${a.description || 'Không có mô tả thêm'}</p>
+              ${renderAttachmentHTML(a.attachment_url)}
+            </div>
+
+            ${isGraded ? `
+              <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 space-y-1">
+                <p class="font-bold flex items-center gap-1"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-600"></i> Lời nhận xét của Cô Trinh:</p>
+                <p class="italic">"${a.feedback || 'Em làm bài rất tốt, tiếp tục phát huy nhé!'}"</p>
+              </div>
+            ` : ''}
+
+            <div class="pt-3 border-t border-brand-pink/20 flex items-center justify-between">
+              <span class="text-xs text-brand-brownLight">${isSubmitted ? `Đã nộp lúc: ${new Date(a.submitted_at).toLocaleString('vi-VN')}` : 'Chưa nộp bài'}</span>
+              <button onclick="openSubmitModal(${a.id})" class="px-5 py-2 rounded-xl bg-brand-accent text-white font-bold text-xs hover:bg-brand-pinkDark transition-all flex items-center gap-1.5">
+                <i data-lucide="send" class="w-3.5 h-3.5"></i>
+                <span>${isSubmitted ? 'Nộp lại bài làm' : 'Nộp bài ngay'}</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function openSubmitModal(assignmentId) {
+      document.getElementById('submitAssignmentId').value = assignmentId;
+      openModal('studentSubmitModal');
+    }
+
+    async function handleStudentFileSelect() {
+      const input = document.getElementById('studentFileInput');
+      const preview = document.getElementById('studentFilePreview');
+      if (!input.files || input.files.length === 0) {
+        preview.innerHTML = '';
+        return;
+      }
+      const file = input.files[0];
+      preview.innerHTML = `
+        <div class="flex items-center gap-2 p-2.5 rounded-xl bg-brand-sageSoft text-xs text-brand-brown">
+          <span class="animate-spin">⏳</span>
+          <span>Đang tải ảnh bài làm lên hệ thống...</span>
+        </div>
+      `;
+      try {
+        const fileUrl = await uploadFileHelper(file);
+        document.getElementById('subUrl').value = fileUrl;
+        const isImg = file.type.startsWith('image/');
+        preview.innerHTML = `
+          <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-300 flex items-center gap-3">
+            ${isImg ? `<img src="${fileUrl}" class="w-14 h-14 object-cover rounded-lg border border-emerald-200" />` : '<div class="w-10 h-10 rounded-lg bg-emerald-200 flex items-center justify-center font-bold">📄</div>'}
+            <div class="text-xs">
+              <p class="font-bold text-emerald-900">✓ Đã tải ảnh bài làm lên!</p>
+              <p class="text-[11px] text-emerald-700">${file.name} (${Math.round(file.size / 1024)} KB)</p>
+            </div>
+          </div>
+        `;
+        showToast('Tải ảnh bài làm lên thành công!');
+      } catch (err) {
+        preview.innerHTML = `<p class="text-xs text-red-600 mt-1">Lỗi tải ảnh: ${err.message}</p>`;
+      }
+    }
+
+    async function handleStudentSubmit(e) {
+      e.preventDefault();
+      const assignmentId = document.getElementById('submitAssignmentId').value;
+      const content = document.getElementById('subContent').value.trim();
+      let attachment_url = document.getElementById('subUrl').value.trim();
+      const fileInput = document.getElementById('studentFileInput');
+
+      // Auto-upload if file selected
+      if (!attachment_url && fileInput.files && fileInput.files.length > 0) {
+        try {
+          showToast('Đang tải ảnh bài làm lên...');
+          attachment_url = await uploadFileHelper(fileInput.files[0]);
+        } catch (err) {
+          alert('Lỗi tải file: ' + err.message);
+          return;
+        }
+      }
+
+      const res = await fetch(`${API_BASE}/api/assignments/${assignmentId}/submit`, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify({ content, attachment_url })
+      });
+      if (res.ok) {
+        closeModal('studentSubmitModal');
+        document.getElementById('subContent').value = '';
+        document.getElementById('subUrl').value = '';
+        fileInput.value = '';
+        document.getElementById('studentFilePreview').innerHTML = '';
+        await loadStudentAssignments();
+        showToast('Chúc mừng em đã nộp bài tập thành công cho Cô Trinh! 🎉');
+      }
+    }
+
+    async function loadStudentSchedules() {
+      const res = await fetch(API_BASE + '/api/schedules', { headers: getAuthHeaders() });
+      const data = await res.json();
+      const schedules = data.schedules || [];
+
+      const listEl = document.getElementById('studentScheduleList');
+      if (schedules.length === 0) {
+        listEl.innerHTML = `<div class="col-span-full p-8 text-center bg-white rounded-2xl border text-sm text-gray-500">Chưa có lịch học nào.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = schedules.map(s => `
+        <div class="bg-white rounded-2xl p-5 border-2 border-brand-sage shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-brand-sageSoft text-brand-sageDark">${s.day_of_week}</span>
+            <span class="text-xs font-bold text-brand-brownDark">⏰ ${s.start_time.substring(0, 5)} - ${s.end_time.substring(0, 5)}</span>
+          </div>
+          <h4 class="font-bold text-base text-brand-brownDark">${s.class_name}</h4>
+          <p class="text-xs text-brand-brownLight">📍 Địa điểm: <a href="https://www.google.com/maps/place/15%C2%B057'04.6%22N+108%C2%B008'03.7%22E/@15.9512692,108.1317826,17z" target="_blank" class="font-bold underline text-brand-accent hover:text-brand-brownDark" title="Xem trên Google Maps">${s.room_location || 'Tại nhà cô Trinh (Hòa Tiến)'}</a></p>
+          <p class="text-[11px] text-brand-brownLight">👩‍🏫 Giáo viên: <strong>${s.teacher_name || 'Cô Trinh'}</strong></p>
+        </div>
+      `).join('');
+    }
+
+    async function loadStudentClasses() {
+      const res = await fetch(API_BASE + '/api/classes', { headers: getAuthHeaders() });
+      const data = await res.json();
+      const classes = data.classes || [];
+
+      const listEl = document.getElementById('studentClassesList');
+      listEl.innerHTML = classes.map(c => `
+        <div class="bg-white rounded-2xl p-5 border border-brand-pink/50 shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold" style="background: ${c.color}20; color: ${c.color}">${c.grade}</span>
+            <span class="text-xs text-brand-brownLight">Môn ${c.subject}</span>
+          </div>
+          <h4 class="font-bold text-base text-brand-brownDark">${c.name}</h4>
+          <p class="text-xs text-brand-brownLight">${c.description || 'Lớp học kèm THCS'}</p>
+          <p class="text-[11px] text-brand-brownLight pt-2 border-t">Giáo viên: <strong>${c.teacher_name}</strong> - Hotline: <strong>${c.teacher_phone || '0702.498.036'}</strong></p>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>
