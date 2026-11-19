@@ -499,6 +499,46 @@
           <label class="block text-xs font-bold text-brand-brownDark mb-1">Mô tả hoặc mục tiêu lớp</label>
           <textarea id="newClassDesc" rows="2" placeholder="Ví dụ: Ôn tập lấy lại căn bản hình học và phương trình..." class="w-full px-3.5 py-2 rounded-xl bg-brand-cream border border-brand-pink/50 text-xs"></textarea>
         </div>
+
+        <!-- XẾP BUỔI / THỜI GIAN HỌC CHO LỚP -->
+        <div class="p-3.5 rounded-2xl bg-brand-pinkSoft/40 border border-brand-pink/60 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-bold text-brand-brownDark flex items-center gap-1.5 cursor-pointer">
+              <input type="checkbox" id="enableScheduleCheckbox" checked onchange="toggleScheduleFields()" class="rounded text-brand-accent focus:ring-brand-accent">
+              <span>Xếp lịch học / Thời gian học cho lớp ngay</span>
+            </label>
+          </div>
+          
+          <div id="scheduleFieldsGroup" class="space-y-2 pt-1">
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label class="block text-[11px] font-semibold text-brand-brownDark mb-1">Thứ học *</label>
+                <select id="newClassDay" class="w-full px-2 py-1.5 rounded-xl bg-white border border-brand-pink/50 text-xs font-medium">
+                  <option value="Thứ 2">Thứ 2</option>
+                  <option value="Thứ 3">Thứ 3</option>
+                  <option value="Thứ 4">Thứ 4</option>
+                  <option value="Thứ 5">Thứ 5</option>
+                  <option value="Thứ 6">Thứ 6</option>
+                  <option value="Thứ 7">Thứ 7</option>
+                  <option value="Chủ Nhật">Chủ Nhật</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-brand-brownDark mb-1">Bắt đầu *</label>
+                <input type="time" id="newClassStartTime" value="18:00" class="w-full px-2 py-1.5 rounded-xl bg-white border border-brand-pink/50 text-xs">
+              </div>
+              <div>
+                <label class="block text-[11px] font-semibold text-brand-brownDark mb-1">Kết thúc *</label>
+                <input type="time" id="newClassEndTime" value="19:30" class="w-full px-2 py-1.5 rounded-xl bg-white border border-brand-pink/50 text-xs">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-brand-brownDark mb-1">Địa điểm buổi học</label>
+              <input type="text" id="newClassLocation" value="Tại nhà cô (Hòa Tiến)" placeholder="Ví dụ: Tại nhà cô (Hòa Tiến) hoặc Tại nhà em Nam" class="w-full px-3 py-1.5 rounded-xl bg-white border border-brand-pink/50 text-xs">
+            </div>
+          </div>
+        </div>
+
         <button type="submit" class="w-full py-3 rounded-xl bg-brand-accent text-white font-bold text-sm shadow hover:bg-brand-pinkDark">
           Lưu & Tạo Lớp
         </button>
@@ -935,6 +975,18 @@
               </div>
               <h3 class="font-display font-bold text-lg text-brand-brownDark">${c.name}</h3>
               <p class="text-xs text-brand-brownLight line-clamp-2">${c.description || 'Chưa có mô tả'}</p>
+              
+              <!-- Schedule info & Quick Add Schedule -->
+              <div class="p-2.5 rounded-xl bg-brand-cream/80 border border-brand-pink/30 flex items-center justify-between text-xs gap-2">
+                <span class="flex items-center gap-1.5 font-semibold text-brand-brownDark truncate" title="${c.schedule_text || 'Chưa có lịch'}">
+                  <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-accent shrink-0"></i>
+                  <span class="truncate">${c.schedule_text || '<span class="text-amber-700 italic font-normal">Chưa xếp lịch học</span>'}</span>
+                </span>
+                <button onclick="openAddScheduleForClass(${c.id})" class="text-[11px] font-bold text-brand-accent hover:text-brand-brownDark flex items-center gap-0.5 shrink-0 bg-white px-2 py-1 rounded-lg border border-brand-pink/40 shadow-xs transition-colors">
+                  <i data-lucide="calendar-plus" class="w-3 h-3"></i>
+                  <span>${c.schedule_text ? 'Thêm ca' : 'Xếp lịch'}</span>
+                </button>
+              </div>
             </div>
 
             <div class="pt-4 border-t border-brand-pink/20 space-y-2.5">
@@ -965,6 +1017,24 @@
       }
     }
 
+    function toggleScheduleFields() {
+      const checkbox = document.getElementById('enableScheduleCheckbox');
+      const group = document.getElementById('scheduleFieldsGroup');
+      if (checkbox && group) {
+        if (checkbox.checked) {
+          group.classList.remove('hidden');
+        } else {
+          group.classList.add('hidden');
+        }
+      }
+    }
+
+    function openAddScheduleForClass(classId) {
+      const select = document.getElementById('schClassSelect');
+      if (select) select.value = classId;
+      openModal('addScheduleModal');
+    }
+
     async function handleCreateClass(e) {
       e.preventDefault();
       const name = document.getElementById('newClassName').value.trim();
@@ -973,10 +1043,19 @@
       const color = document.querySelector('input[name="classColor"]:checked').value;
       const description = document.getElementById('newClassDesc').value.trim();
 
+      const enableSchedule = document.getElementById('enableScheduleCheckbox') ? document.getElementById('enableScheduleCheckbox').checked : false;
+      const day_of_week = enableSchedule ? document.getElementById('newClassDay').value : null;
+      const start_time = enableSchedule ? document.getElementById('newClassStartTime').value : null;
+      const end_time = enableSchedule ? document.getElementById('newClassEndTime').value : null;
+      const room_location = enableSchedule ? document.getElementById('newClassLocation').value.trim() : null;
+
       const res = await fetch(API_BASE + '/api/classes', {
         method: 'POST',
         headers: getAuthHeaders(),
-        body: JSON.stringify({ name, subject, grade, color, description })
+        body: JSON.stringify({
+          name, subject, grade, color, description,
+          day_of_week, start_time, end_time, room_location
+        })
       });
       if (res.ok) {
         closeModal('createClassModal');
@@ -984,7 +1063,11 @@
         document.getElementById('newClassDesc').value = '';
         await loadTeacherClasses();
         await loadTeacherStats();
-        showToast('Đã tạo lớp học mới thành công!');
+        await loadTeacherSchedules();
+        showToast('Đã tạo lớp và xếp lịch học thành công!');
+      } else {
+        const data = await res.json();
+        alert(data.error || 'Lỗi khi tạo lớp học');
       }
     }
 

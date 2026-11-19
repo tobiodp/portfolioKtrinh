@@ -198,7 +198,12 @@ app.get('/api/classes', authenticateToken, async (req, res) => {
       const [classes] = await pool.execute(`
         SELECT c.*, 
                COUNT(DISTINCT cm.student_id) AS student_count,
-               COUNT(DISTINCT a.id) AS assignment_count
+               COUNT(DISTINCT a.id) AS assignment_count,
+               (
+                 SELECT GROUP_CONCAT(CONCAT(s.day_of_week, ' (', TIME_FORMAT(s.start_time, '%H:%i'), '-', TIME_FORMAT(s.end_time, '%H:%i'), ')') SEPARATOR ', ')
+                 FROM schedules s
+                 WHERE s.class_id = c.id
+               ) AS schedule_text
         FROM classes c
         LEFT JOIN class_members cm ON c.id = cm.class_id
         LEFT JOIN assignments a ON c.id = a.class_id
@@ -209,7 +214,12 @@ app.get('/api/classes', authenticateToken, async (req, res) => {
       res.json({ classes });
     } else {
       const [classes] = await pool.execute(`
-        SELECT c.*, u.full_name as teacher_name, u.phone as teacher_phone
+        SELECT c.*, u.full_name as teacher_name, u.phone as teacher_phone,
+               (
+                 SELECT GROUP_CONCAT(CONCAT(s.day_of_week, ' (', TIME_FORMAT(s.start_time, '%H:%i'), '-', TIME_FORMAT(s.end_time, '%H:%i'), ')') SEPARATOR ', ')
+                 FROM schedules s
+                 WHERE s.class_id = c.id
+               ) AS schedule_text
         FROM classes c
         JOIN class_members cm ON c.id = cm.class_id
         JOIN users u ON c.teacher_id = u.id
@@ -226,7 +236,7 @@ app.get('/api/classes', authenticateToken, async (req, res) => {
 app.post('/api/classes', authenticateToken, async (req, res) => {
   try {
     if (req.user.role !== 'teacher') return res.status(403).json({ error: 'Chỉ giáo viên mới có quyền tạo lớp' });
-    const { name, subject, grade, color, description } = req.body;
+    const { name, subject, grade, color, description, day_of_week, start_time, end_time, room_location } = req.body;
     if (!name || !subject || !grade) {
       return res.status(400).json({ error: 'Vui lòng nhập tên lớp, môn học và khối lớp' });
     }
@@ -236,7 +246,17 @@ app.post('/api/classes', authenticateToken, async (req, res) => {
       VALUES (?, ?, ?, ?, ?, ?)
     `, [req.user.id, name.trim(), subject, grade, color || '#E7786B', description ? description.trim() : '']);
 
-    res.json({ success: true, classId: result.insertId });
+    const classId = result.insertId;
+
+    // Tự động tạo buổi học nếu có xếp lịch
+    if (day_of_week && start_time && end_time) {
+      await pool.execute(`
+        INSERT INTO schedules (class_id, day_of_week, start_time, end_time, room_location)
+        VALUES (?, ?, ?, ?, ?)
+      `, [classId, day_of_week, start_time, end_time, room_location ? room_location.trim() : 'Tại nhà cô (Hòa Tiến)']);
+    }
+
+    res.json({ success: true, classId });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

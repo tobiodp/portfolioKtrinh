@@ -32,10 +32,14 @@ Hệ thống của cô bao gồm **2 phân hệ chính**:
 Khi đăng nhập thành công, cô sẽ thấy thanh điều khiển với 5 mục chính:
 
 ### 1️⃣ Quản Lý Lớp Học (Classes)
-* **Tạo lớp mới:**
+* **Tạo lớp mới & Xếp lịch học ngay lập tức:**
   * Bấm nút xanh **"+ Tạo Lớp"** ở góc trên.
   * Điền Tên lớp (ví dụ: *Toán 7 - Kèm Nâng Cao* hoặc *KHTN 8 - Khám Phá Hóa Lý*), chọn Khối lớp và Môn học.
-  * Chọn màu sắc nhận diện cho lớp để dễ phân biệt, rồi bấm **"Lưu & Tạo Lớp"**.
+  * **Xếp lịch học ngay:** Hệ thống có sẵn phần xếp buổi học: cô chỉ cần chọn **Thứ trong tuần** (ví dụ: *Thứ 5*), **Giờ bắt đầu - Giờ kết thúc** (ví dụ: *18:00 - 19:30*) và **Địa điểm học**.
+  * Bấm **"Lưu & Tạo Lớp"** ➔ Hệ thống vừa tạo lớp vừa tự động lên lịch học vào Thời khóa biểu và lịch gửi email nhắc học!
+* **Xem và thêm ca học cho lớp:**
+  * Ngay trên mỗi thẻ lớp học, hệ thống hiển thị rõ ràng thời gian học (ví dụ: `⏰ Thứ 5 (18:00-19:30)`).
+  * Cô có thể bấm nút **"+ Thêm ca"** ngay trên thẻ lớp để thêm buổi học thứ 2 trong tuần cho lớp đó cực kỳ nhanh chóng.
 * **Thêm học sinh vào lớp:**
   * Tại thẻ của lớp học tương ứng, bấm dòng chữ **"+ Thêm học sinh"**.
   * Điền: Họ tên học sinh, Tên đăng nhập (ví dụ: `nam7`), Email và Mật khẩu khởi tạo (mặc định để `123456`).
